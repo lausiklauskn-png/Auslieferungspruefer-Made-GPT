@@ -1,0 +1,76 @@
+<!doctype html>
+<!-- KÖDERSEITE. Sie ist absichtlich kaputt.
+
+     Jede Befundart wird hier GENAU EINMAL ausgeloest. Wer den Pruefer aendert,
+     laesst ihn darueber laufen: kommen nicht alle fuenf Kennungen zurueck — und
+     zwar jede genau einmal —, dann ist der PRUEFER kaputt, nicht die Seite.
+
+     Erwartet: 5 Befunde, Rueckgabewert 1.
+       python3 pruefe-seite.py koeder.html
+
+     Die Anmerkungen nennen die Kennung, nie das ausloesende Wort selbst.
+     Sonst zaehlte der Kommentar als sechster Befund. -->
+<html>
+<!-- koeder: KEINE-SPRACHE — dem <html> oben fehlt die lang-Angabe. -->
+<head>
+<meta charset="utf-8">
+<title>Köderseite</title>
+<meta name="description" content="Absichtlich fehlerhafte Seite zum Pruefen des Pruefers.">
+
+<!-- koeder: FREMDE-ADRESSE — ein preload wird beim Aufraeumen am haeufigsten
+     uebersehen, weil es nichts Sichtbares anfasst. -->
+<link rel="preload" as="font" href="https://cdn.irgendwo.test/schrift.woff2" crossorigin>
+
+<!-- koeder: KEIN Befund — `cid:` verweist auf einen Teil IM SELBEN Behaelter.
+     Chrome schreibt das beim Herunterladen einer Seite als `.mhtml`, und genau
+     diesen Weg nimmt das Tablet (view-source: ist dort gesperrt). Gemeldet
+     wurde es bis zum 2026-09-11 als "holt von einem fremden Rechner: cid:".
+
+     ⚠ DIESE ZEILE IST DER WAECHTER. Die Probe besteht darauf, dass die
+     Koederseite JEDE Befundart GENAU EINMAL ausloest; naehme jemand `cid` aus
+     HARMLOS, waeren es zwei FREMDE-ADRESSE-Befunde und die Probe faellt um.
+     Ein Riegel, den keine Probe von seinem Fehlen unterscheiden kann, ist eine
+     Behauptung. -->
+<link rel="stylesheet" type="text/css" href="cid:css-bb06e6da-1750-4a89-a344-98ce86d9e604@mhtml.blink">
+
+<style>
+  body { font: 16px/1.6 system-ui, sans-serif; margin: 2rem; max-width: 40rem; }
+  h1   { font-size: 1.4rem; }
+</style>
+</head>
+
+<body>
+<h1>Köderseite</h1>
+
+<p>Diese Seite wird nie ausgeliefert. Sie steht hier, damit der Prüfer sich an
+ihr selbst beweisen muss.</p>
+
+<!-- koeder: FUELLTEXT — ein Fuellsatz aus der Bauzeit, genau eine Zeile.
+     Diese Anmerkung darf das ausloesende Wort nicht selbst enthalten, sonst
+     zaehlt sie als sechster Befund. Beim ersten Lauf tat sie es — und die
+     Koederseite hat es auf der Stelle gezeigt. -->
+<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</p>
+
+<!-- koeder: BILD-OHNE-ALT — ohne alt ist das Bild für ein Vorleseprogramm
+     gar nicht vorhanden.
+
+     Die beiden Bilder daneben sind GEGENPROBEN: sie dürfen NICHT gemeldet
+     werden. Das dritte ist der wichtigere Fall — alt="" heißt „schmückend,
+     überspringen" und ist die RICHTIGE Angabe. Wer den Prüfer ändert und dabei
+     versehentlich auch das leere alt anklagt, sieht es nur, weil dieses Bild
+     hier steht. (Gefunden hat die Lücke Sten in der Gegenprüfung vom
+     2026-08-20 — die Regel stand in der Anleitung, aber nichts bewachte sie.) -->
+<p>
+  <img src="bild-ohne-beschreibung.png" width="120" height="80">
+  <img src="bild-mit-beschreibung.png" width="120" height="80" alt="Ein beschriftetes Bild">
+  <img src="zierleiste.png" width="120" height="8" alt="">
+</p>
+
+<!-- koeder: LEERER-LINK — href="#" führt nirgendwohin. Der Link daneben schon. -->
+<p><a href="#">Knopf ohne Ziel</a> · <a href="LIESMICH.md">Anleitung lesen</a></p>
+
+<p>Alles Übrige auf dieser Seite ist bewusst sauber: relative Adressen,
+beschriftete Bilder, echte Ziele. Was der Prüfer darüber hinaus meldet, ist ein
+Fehlalarm — und dann ist er zu scharf eingestellt.</p>
+</body>
+</html>

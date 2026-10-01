@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="de" data-thema="tag">
+<head>
+<script>/* PT-SPRACHRIEGEL — Begründung in assets/sprache.js § Sprachriegel. MUSS inline und VOR dem ersten Anstrich laufen: danach hat Chrome längst entschieden. */(function(){try{if(localStorage.getItem("apgpt_lang_wahl")!=="1")return;var h=document.documentElement;h.lang=localStorage.getItem("apgpt_lang")==="en"?"en":"de";h.setAttribute("translate","no");h.classList.add("notranslate");var m=document.createElement("meta");m.name="google";m.content="notranslate";(document.head||h).appendChild(m);}catch(e){}})();</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>Auslieferungsprüfer GPT</title>
+<meta name="description" content="Prüft eine HTML-Seite darauf, was sie nach außen gibt: fremde Adressen, Reste aus der Bauzeit, Bilder ohne Beschreibung, Links ohne Ziel. Läuft im Browser, ohne Netz, ohne Konto.">
+<link rel="canonical" href="https://lausiklauskn-png.github.io/Auslieferungspruefer-Made-GPT/auslieferungspruefer.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Auslieferungsprüfer GPT">
+<meta property="og:locale" content="de_DE">
+<meta property="og:title" content="Auslieferungsprüfer GPT">
+<meta property="og:description" content="Dateien, PDFs, Bilder, E-Mails und Quelltext lokal prüfen. Mit OCR und vollständigem Offline-Vorrat.">
+<meta property="og:url" content="https://lausiklauskn-png.github.io/Auslieferungspruefer-Made-GPT/auslieferungspruefer.html">
+<meta property="og:image" content="https://lausiklauskn-png.github.io/Auslieferungspruefer-Made-GPT/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Auslieferungsprüfer GPT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Auslieferungsprüfer GPT">
+<meta name="twitter:description" content="Dateien und Inhalte vor dem Weitergeben lokal prüfen.">
+<meta name="twitter:image" content="https://lausiklauskn-png.github.io/Auslieferungspruefer-Made-GPT/assets/og-image.png">
+
+<meta name="theme-color" content="#6144c6">
+<link rel="manifest" href="manifest.json">
+<!-- ⚠ EIGENES ZEICHEN (Klaus 2026-09-30): Schild und Paket mit Haken, aus
+     Klaus' Bild. Dieselbe Familie wie der Sende-Prüfer (Kristall-Schild mit
+     Goldrand), aber Paket statt Brief und Waldgrün statt Navy. Als Datei aus
+     dem eigenen Ordner, nie von einer fremden Adresse. Vorher (2026-08-23 bis
+     2026-09-30): ein Pfosten mit zwei Pfeilen, inline als SVG. -->
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png?v=101">
+<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png?v=101">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=101">
+<link rel="stylesheet" href="assets/style.css?v=101">
+<script>
+/* Thema VOR dem ersten Anstrich setzen — sonst blitzt bei jedem Aufruf kurz das
+   Standard-Thema auf, bevor die gespeicherte Wahl greift. Absichtlich winzig
+   und inline: eine eigene Datei wäre hier ein Netzweg auf dem kritischen Pfad,
+   für vier Zeilen. */
+try { var _t = localStorage.getItem("apgpt_thema");
+      if (_t === "nacht" || _t === "signal" || _t === "tag") document.documentElement.setAttribute("data-thema", _t); }
+catch (e) {}
+</script>
+<!-- ══ DIE EIGENE SBKIM-SCHUBLADE — MUSS VOR JEDEM MODUL STEHEN ══════════════
+     Erste der vier Fallen aus Sages LEHREN § 4. Modul 01 liest
+     `window.SBKIM_DB_SUFFIX` BEIM LADEN und macht daraus seinen Vorgabe-Namen.
+     Fehlt die Zeile, ist der Vorgabe-Name die GETEILTE Schublade `sbkim`.
+
+     ⚠ HIER ZÄHLT DAS DOPPELT: auf `pwa-toolpoint.de` liegen seit dem 2026-09-08
+     ZWEI Knoten — der Marktplatz (`pwatoolpoint`) und dieses Werkzeug. IndexedDB
+     gehört dem URSPRUNG, nicht dem Pfad. Ohne getrennte Schubladen hätten beide
+     dieselbe Identität, und der Andock-Wizard zeigte die Beschreibung der
+     anderen Seite. Genau das ist am 2026-08-16 an Alis Moderaum passiert.
+
+     ⚠ UND SIE IST MEHR ALS EIN ZWEITER RIEGEL: gemessen am 2026-09-08 weist
+     Modul 01 einen späteren `init({dbSuffix:…})` mit einem ANDEREN Wert ab,
+     weil der Vorgabe-Name aus dem Kopf schon steht. Die Zeile schützt die
+     Schublade also auch gegen einen falschen Aufruf im Klebstoff. -->
+<script>window.SBKIM_DB_SUFFIX = "auslieferungspruefer-gpt";</script>
+<style>
+/* ══ DAS ACHT-PIXEL-RASTER (2026-08-23) ═══════════════════════════════════
+   Abstände, Höhen und Zeilenhöhen liegen auf einem Raster von 8. Das ist der
+   Unterschied, den ein Gestalter sieht und ein Nutzer nur spürt.
+
+   ⚠ ZEILENHÖHEN ALS PIXEL, NIE ALS FAKTOR. `1.5` auf 13px ergibt 19,5px und
+   zerlegt das Raster an der Stelle, an der es am meisten trägt.
+
+   Wo es BRECHEN muss, und zwar mit Absicht:
+     · Berührungsziele 44px — die Bauregel fordert 24, für einen Finger auf dem
+       Tablet sind 44 die Wahrheit. Ein Raster, das die Bedienung verschlechtert,
+       hat seinen Zweck verfehlt.
+     · Haarlinien bleiben 1px.
+     · Optische Ausrichtung (Pfeilspitzen, Haken) wird um 1–2px verschoben, bis
+       es AUSSIEHT wie ausgerichtet — Rechnen und Sehen sind hier zweierlei. */
+:root {
+  --s1: 8px;   --s2: 16px;  --s3: 24px;
+  --s4: 32px;  --s6: 48px;  --s8: 64px;
+  /* ⚠ GRÖSSER SEIT 2026-08-23, auf Klaus' Wort: „die Schriften und alles, viel
+     zu klein und zu viel." Die alte Leiter war 12/14/16/20 — auf einem Tablet
+     in Armlänge ist das die Schrift eines Beipackzettels.
+     Der Abstand bleibt auf dem Achter-Raster; die ZEILENHÖHEN sitzen jetzt auf
+     einem Vierer-Unterraster. Das ist eine benannte Abweichung, kein Versehen:
+     bei strengen Achtern gibt es für Fließtext nur 24 oder 32, und 24 auf 17px
+     ist 1,41 — zu eng für einen Absatz, den jemand wirklich liest. */
+  --f-klein: 13px; --lh-klein: 20px;
+  --f-mono:  15px; --lh-mono:  24px;
+  --f-text:  17px; --lh-text:  28px;
+  --f-fund:  23px; --lh-fund:  32px;
+  --ziel: 44px;
+}
+/* Nur was diese Seite braucht. Der Rest kommt aus style.css — zwei Fassungen
+   derselben Knopf-Gestalt wären eine Drift-Quelle mit Ansage. */
+
+/* ══ DIE VIER EINGÄNGE (2026-08-23) ═══════════════════════════════════════
+   Klaus wollte „zusätzliche Container mit Funktionen". Vier gestapelte Kästen
+   wären genau das „zu viel" gewesen, das er im selben Satz beanstandet hat —
+   also EIN Kasten, der sich umschaltet, und eine Leiste, die sagt was es gibt.
+   Echte Reiter (role=tablist), damit die Tastatur und das Vorleseprogramm sie
+   als das lesen, was sie sind. */
+.pr-waehler { display: flex; flex-wrap: wrap; gap: var(--s1); margin: var(--s3) 0 var(--s2); }
+.pr-reiter {
+  flex: 1 1 190px; min-height: var(--ziel);
+  font: 600 var(--f-text)/var(--lh-text) var(--sans);
+  color: var(--muted); background: var(--card);
+  border: 1px solid var(--line); border-radius: 12px; padding: var(--s1) var(--s2);
+  cursor: pointer; text-align: center;
+}
+.pr-reiter:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pr-reiter[aria-selected="true"] { color: var(--text); border-color: var(--accent); background: rgba(242,181,68,.10); }
+.pr-was { display: block; font-weight: 400; font-size: var(--f-klein); line-height: var(--lh-klein); }
+
+.pr-feld {
+  width: 100%; box-sizing: border-box; min-height: 190px; resize: vertical;
+  font: var(--f-mono)/var(--lh-mono) var(--mono); color: var(--text);
+  background: rgba(0,0,0,.22); border: 1px solid var(--line); border-radius: 12px;
+  padding: var(--s2);
+}
+.pr-feld:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pr-ablage {
+  border: 1px dashed var(--line); border-radius: 14px; padding: var(--s3);
+  text-align: center; color: var(--muted); transition: border-color .15s, background .15s;
+  font-size: var(--f-text); line-height: var(--lh-text);
+}
+.pr-ablage.pr-drueber { border-color: var(--accent); background: rgba(242,181,68,.07); }
+/* 🧪 deutlich als Test erkennbar: gestrichelt, in der Akzentfarbe */
+.pr-test { margin: 14px 0 0; padding: 12px 14px; border: 2px dashed var(--accent); border-radius: 10px; }
+.pr-reihe { display: flex; flex-wrap: wrap; gap: var(--s1); align-items: center; margin: var(--s2) 0; }
+.pr-erlaubt {
+  flex: 1 1 260px; min-width: 0; box-sizing: border-box; min-height: var(--ziel);
+  font: var(--f-text)/var(--lh-text) var(--sans); color: var(--text);
+  background: rgba(0,0,0,.22); border: 1px solid var(--line); border-radius: 10px;
+  padding: var(--s1) var(--s2);
+}
+.pr-erlaubt:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pr-reihe .btn, .pr-reihe .thema-knopf { min-height: var(--ziel); }
+
+/* Die Ergebnis-Fläche hat eine Mindesthöhe, damit die Seite beim ersten Befund
+   nicht springt. Bei PWA Toolpoint hat eine Platzreserve schon einmal das
+   Gegenteil bewirkt (CLS 0,105 → 0,136), weil sie bei LEERER Liste einen halben
+   Bildschirm freihielt und ihn dann abgab. Hier ist es die Höhe der
+   Zusammenfassung, die IMMER erscheint, egal ob sauber oder nicht. Reserviert
+   wird also nur, was sicher kommt. */
+.pr-ergebnis { min-height: 96px; }
+
+.pr-summe { display: flex; flex-wrap: wrap; gap: var(--s1); align-items: center; margin-bottom: var(--s3); }
+.pr-zahl {
+  font: 600 var(--f-text)/var(--lh-text) var(--sans); padding: 6px var(--s2); border-radius: 999px;
+  border: 1px solid var(--line); background: var(--card); color: var(--text);
+}
+.pr-zahl.pr-sauber { border-color: var(--ok); color: var(--ok); }
+.pr-zahl.pr-befund  { border-color: var(--warn); color: var(--warn); }
+.pr-zahl.pr-ungeprueft { border-color: var(--warn); color: var(--warn); border-style: dashed; }
+/* Erwartete Funde sind kein Alarm — siehe § Die Test-Seite in der Datei. */
+.pr-zahl.pr-erwartet { border-color: var(--ok); color: var(--ok); }
+/* Die Zahlen sind Links auf ihre Karte (Klaus 2026-09-29). Sie sehen aus wie
+   vorher und zeigen beim Zeigen/Tippen, dass sie ein Weg sind. */
+a.pr-zahl { text-decoration: none; cursor: pointer; }
+a.pr-zahl:hover, a.pr-zahl:focus-visible { border-color: var(--accent); }
+/* Die angesprungene Karte trägt einen Rahmen — sonst sucht das Auge. */
+.pr-karte:target { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.pr-liste { list-style: none; margin: 0; padding: 0; }
+.pr-verdacht { margin: 16px 0 0; }
+.pr-markiert { margin: 14px 0 0; display: grid; gap: 8px; justify-items: start; }
+.pr-markiert img { max-width: 100%; max-height: 70vh; border: 1px solid var(--line); border-radius: 6px; }
+.pr-verdacht .pr-liste { margin-top: 10px; }
+
+/* Der fremde Wirt ist die eine Angabe, nach der man entscheidet, ob einen ein
+   Fund stört. Er gehört deshalb nach oben und nicht ins technische Fach. */
+.pr-wirt { font-family: var(--mono); font-size: var(--f-mono); line-height: var(--lh-mono);
+           color: var(--accent); margin: var(--s1) 0 0; overflow-wrap: anywhere; }
+
+/* Beispiel-Adressen zum Antippen. Auf einem Tablet ist eine lange Adresse
+   abzutippen die sicherste Art, einen Tippfehler zu erzeugen. */
+.pr-beispiele { list-style: none; margin: 0 0 var(--s2); padding: 0;
+                font-size: var(--f-klein); line-height: var(--lh-klein); color: var(--muted); }
+.pr-beispiele li { margin: 0 0 4px; }
+.pr-bsp { font-family: var(--mono); font-size: var(--f-klein); color: var(--accent);
+          background: none; border: 0; padding: 6px 0; cursor: pointer;
+          text-decoration: underline; text-underline-offset: 3px; }
+.pr-bsp:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* ══ DIE FUNDKARTE ════════════════════════════════════════════════════════
+   ⚠ HIER STAND EIN DREI-SPALTEN-RASTER, UND ES WAR DER GANZE FEHLER.
+   `.pr-treffer` trug aus der Zeit vor dem Karten-Umbau noch
+   `display:grid; grid-template-columns:auto auto 1fr`. Auf demselben `li` liegt
+   seit dem 2026-08-23 auch `.pr-karte` — gedacht als Karte im Block-Fluss. Das
+   Raster gewann: Klartext-Satz, Abhilfe und technische Zeile standen NEBEN-
+   einander in drei schmalen Spalten. Gemessen am 2026-08-23 in Chromium:
+
+     DeX 1920:  Spalten 399px | 413px | 135px, Karte 257px hoch
+     Tablet 800: Spalten 269px | 283px | 135px, Karte 305px hoch
+
+   Die technische Zeile bekam 135px und brach auf 120px Höhe um; daneben stand
+   halbleere Fläche. Genau das zeigen Klaus' drei Bildschirmfotos.
+
+   Die Klasse `.pr-treffer` BLEIBT, weil `tests/smoke_pruefer.mjs` an vier
+   Stellen darauf zielt — nur das Raster geht. Wer eine Klasse umbenennt, auf
+   die eine Probe zielt, zieht sie mit oder benennt sie nicht um. */
+.pr-treffer, .pr-karte {
+  display: block;
+  border: 1px solid var(--line); border-radius: 12px;
+  padding: var(--s3); margin-bottom: var(--s2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+.pr-kopf { font-size: var(--f-fund); line-height: var(--lh-fund); font-weight: 600;
+           margin: 0; color: var(--text); }
+.pr-rat  { font-size: var(--f-text); line-height: var(--lh-text);
+           color: var(--muted); margin: var(--s1) 0 var(--s2); max-width: 68ch; }
+/* Was jetzt tun (2026-10-01): ruhige Schritte, abgesetzt, nicht rot. */
+.pr-ruhe { border-left: 3px solid var(--ok); padding: var(--s1) var(--s2);
+           margin: 0 0 var(--s2); max-width: 72ch; }
+.pr-ruhe-kopf { font-weight: 600; margin: 0 0 4px; color: var(--text); }
+.pr-ruhe-liste { margin: 0; padding-left: 1.3em; color: var(--text);
+                 font-size: var(--f-text); line-height: var(--lh-text); }
+.pr-ruhe-liste li { margin: 2px 0; }
+.pr-stelle { display: flex; gap: var(--s2); align-items: center; flex-wrap: wrap; }
+.pr-stellensatz { flex-basis: 100%; margin: 0; }
+.pr-marke { font-family: var(--mono); font-size: var(--f-mono); line-height: var(--lh-mono);
+            color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pr-quelle {
+  flex: 1 1 320px; min-width: 0;
+  font: var(--f-mono)/var(--lh-mono) var(--mono); color: var(--text);
+  background: rgba(0,0,0,.20); border-radius: 8px; padding: var(--s1) var(--s2);
+  overflow-x: auto; white-space: pre;
+}
+
+/* ══ DAS FACHWORT KOMMT INS FACH (2026-08-23) ═════════════════════════════
+   Klaus: „viel zu klein und zu viel." Das Meiste an Text auf einer Fundkarte
+   war die technische Zeile plus die Kennung — beides schreibt sich an Klaus und
+   an die Python-Fassung, nicht an den, der die Seite reparieren soll. Sie geht
+   nicht verloren, sie klappt nur zu. Zu ist die Vorgabe: wer sie braucht, weiß
+   das; wer sie nicht braucht, soll sie nicht lesen müssen. */
+.pr-detail { margin-top: var(--s2); }
+/* Dieselbe Falle, dieselbe Abhilfe — hier fiel sie nur nicht auf, weil der
+   Text aus einem Stück besteht. Ein Fehler, der heute nichts kaputtmacht,
+   macht morgen etwas kaputt. */
+.pr-detail > summary {
+  cursor: pointer; min-height: var(--ziel); padding: 12px 0; box-sizing: border-box;
+  font-size: var(--f-klein); line-height: var(--lh-klein); color: var(--muted);
+  font-family: var(--mono); letter-spacing: .04em;
+}
+.pr-detail > summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pr-tech { font-size: var(--f-mono); line-height: var(--lh-mono);
+           font-family: var(--mono); color: var(--muted); margin: 0 0 var(--s1);
+           overflow-wrap: anywhere; }
+.pr-kennung {
+  font-family: var(--mono); font-size: var(--f-klein); line-height: var(--lh-klein);
+  letter-spacing: .04em; color: var(--muted);
+}
+.pr-kennung.pr-fuss { display: block; }
+
+/* ⚠ 44px, nicht 24. Ein Finger ist kein Mauszeiger. */
+.pr-mit { min-height: var(--ziel); padding: 0 var(--s2); }
+.pr-mitreihe { display: flex; gap: var(--s2); flex-wrap: wrap; margin-top: var(--s3); }
+.pr-mitreihe .btn, .pr-mitreihe .thema-knopf { min-height: 48px; flex: 1 1 220px; }
+.pr-geaendert { margin: var(--s2) 0 0; font-size: var(--f-klein);
+                line-height: var(--lh-klein); color: var(--warn, #f2b544); }
+
+/* Die Seite selbst redet auch zu klein — dieselbe Beschwerde, andere Stelle.
+   ⚠ NUR DIREKTE KINDER (`>`), und das ist gemessen, nicht vorsichtshalber.
+   Die erste Fassung stand als `main.wrap p` da. Das ist Spezifität (0,1,2) und
+   schlägt `.pr-kopf` mit (0,1,0) — die Überschrift jeder Fundkarte stand
+   danach auf 17px statt auf 23, und die technische Zeile verlor ihre
+   Schreibmaschinen-Schrift. Aufgefallen ist es nur, weil nach dem Umbau
+   nachgemessen wurde: im Bild sah die Karte richtig aus.
+   Dieselbe Falle wie in Kimhub am 2026-08-22 — eine später stehende Regel
+   gleicher oder höherer Spezifität überschreibt leise die frühere. */
+main.wrap > p, .pr-grenzen li, .pr-grenzen p {
+  font-size: var(--f-text); line-height: var(--lh-text);
+}
+.pr-eingang > p { font-size: var(--f-text); line-height: var(--lh-text); }
+main.wrap .feldhinweis { font-size: var(--f-klein); line-height: var(--lh-klein); }
+
+footer.pr-fussleiste {
+  border-top: 1px solid var(--line); margin-top: var(--s8);
+  padding: var(--s4) 0 var(--s6);
+  font-size: var(--f-text); line-height: var(--lh-text); color: var(--muted);
+}
+/* ⚠ KEINE DECKKRAFT. In family-project steht `.85`, dort mit 5,99:1 in Ordnung —
+   aber diese Seite hat DREI Themen, und im hellen ergäbe dieselbe Deckkraft nur
+   4,40:1 und fiele durch. Bauregel 2.3: Kontrast gilt pro Thema. Leise wird die
+   Zeile durch Größe und Abstand, nicht durch Transparenz. */
+footer.pr-fussleiste p { margin: 0 0 var(--s1); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+.pr-grenzen { margin-top: var(--s4); }
+/* ⚠ HIER STAND `display:flex`, UND DAS WAR EIN FEHLER VON MIR (2026-08-23).
+   Klaus hat es im Bild gesehen: „Was er sucht — und was er nicht kann" stand da
+   als „…und ernichtkann". Ein Flex-Container macht JEDES Kind zu einem
+   Flex-Element, und die Leerzeichen ZWISCHEN den Elementen fallen dabei weg —
+   das `<strong>nicht</strong>` klebte an seinen Nachbarn. Gemessen:
+   innerText war "Was er sucht — und was er\nnicht\nkann".
+   Ich hatte flex nur genommen, um die 44px Berührungshöhe zu füllen. Das geht
+   mit Innenabstand genauso, und der zerlegt keinen Satz. */
+.pr-grenzen summary { cursor: pointer; font-weight: 600;
+                      padding: 10px 0; min-height: var(--ziel); box-sizing: border-box;
+                      font-size: var(--f-text); line-height: var(--lh-text); }
+.pr-grenzen li { margin: var(--s1) 0; }
+</style>
+<link rel="stylesheet" href="assets/design-gpt.css?v=101">
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="auslieferungspruefer.html"><span class="mark" aria-hidden="true"></span><span class="gpt-brand-label">Auslieferungsprüfer <span class="gpt-badge">GPT</span></span></a>
+    <nav class="top">
+      <a class="thema-knopf" id="ueberblickKnopf" href="start.html" data-i18n-titel="btn_ueberblick_t"
+         title="Überblick: was der Prüfer kann und was bei einem Fund zu tun ist"
+         aria-label="Überblick: was der Prüfer kann und was bei einem Fund zu tun ist">
+        <span aria-hidden="true">ℹ</span><span data-i18n="btn_ueberblick">Überblick</span>
+      </a>
+      <button class="thema-knopf" id="frischKnopf" type="button"
+              title="Aktualisieren — Vorrat wegwerfen und wirklich neu laden"
+              aria-label="Aktualisieren — Vorrat wegwerfen und wirklich neu laden">
+        <span aria-hidden="true">⟳</span><span data-i18n="btn_frisch">Aktualisieren</span>
+      </button>
+      <button class="thema-knopf" id="sprachKnopf" type="button"
+              title="Sprache / Language" aria-pressed="false"
+              aria-label="Sprache umschalten, Deutsch oder Englisch. Langer Druck: Browser-Übersetzer wieder zulassen">
+        <span aria-hidden="true">🌐</span><span>DE&nbsp;/&nbsp;EN</span>
+      </button>
+      <button class="thema-knopf" id="themaKnopf" type="button">
+        <span class="thema-zeichen" aria-hidden="true">◐</span><span class="thema-name">Nacht</span>
+      </button>
+      <!-- Kein „← Marktplatz“ mehr (Klaus 2026-09-30): eine eigene App, kein Teil von PWA Toolpoint. -->
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="gpt-hero"><div class="gpt-hero-copy"><p class="gpt-eyebrow" data-i18n="gpt_eyebrow">VOR DEM VERÖFFENTLICHEN · VOR DEM WEITERGEBEN</p><h1 data-i18n="pr_04">Prüfen, bevor du weitergibst.</h1>
+  <!-- ⚠ NUR DER ERSTE ABSATZ IST GEWANDERT. Der Gestalter wollte beide in den
+       Aufklapper (78 → 11 Wörter). Der Arzt hat nachgesehen: der zweite ist die
+       Datenschutz-Zusage, mit der `og:description` und die Beschreibung dieser
+       Seite werben. Sie wegzuklappen kostet genau die Aussage, die jemanden
+       überhaupt fremden Quelltext einfügen lässt. Also: 78 → 35 Wörter. -->
+  <!-- ══ ZWECK ZUERST, BAUWEISE DANACH (Klaus 2026-09-21) ══════════════════
+       Klaus vor dem Zwilling dieses Werkzeugs: „Im Prinzip sieht das aus wie ein
+       Dev-Test-Tool … ich habe zurzeit gar keine Idee als Nutzer, wofür ich das
+       verwenden kann." Und danach: „nur die Funktionsweise beschrieben, aber
+       nicht das Warum."
+
+       ⚠ HIER FING DIE SEITE MIT EINER ZUSICHERUNG AN. „Die Datei bleibt auf
+       deinem Gerät" beantwortet „was passiert mit meiner Datei?" — nicht „warum
+       sollte ich hier überhaupt etwas hineinlegen?". Jeder Satz stimmte, und
+       keiner sagte, wofür man das Werkzeug benutzt.
+
+       ⚠ UND DER ZWECK-SATZ BLEIBT KURZ. An DIESER Seite hat Klaus am
+       2026-08-23 „viel zu klein und zu viel" beanstandet; der Gestalter hat den
+       Kopf danach von 78 auf 35 Wörter gebracht. Ein Zweck, der den Kopf wieder
+       aufbläht, tauscht einen Befund gegen den anderen. Die zwei Fälle stehen
+       deshalb im Aufklapper darunter — vor der Bedienung, aber nicht im Weg. -->
+  <p class="pr-zweck" data-i18n-html="pr_zweck"><strong>Bevor du etwas online
+  stellst, sagt dir diese Seite, was darin steht, das niemand sehen soll</strong>
+  — ein vergessener Zugangsschlüssel, eine Kundenadresse, eine Kontonummer, ein
+  Aufruf an einen fremden Rechner.</p>
+
+  <p data-i18n-html="pr_05">Deine Datei wird <strong>lokal geprüft</strong>. Kein Upload. Die vollständige Offline-Prüfung benötigt den geladenen OCR- und PDF-Vorrat.</p>
+
+</div><aside class="gpt-hero-aside"><img src="icons/icon-192.png" alt="" width="70" height="70"><b data-i18n-html="gpt_aside_title">Deine Datei.<br>Dein Prüfbericht.</b><span data-i18n="gpt_aside_text">Inhalte und Dateistrukturen prüfen. Versteckte Anweisungen sichtbar machen.</span></aside></section>
+  <div class="gpt-status"><span class="gpt-local" data-i18n="gpt_local">Dateiprüfung auf deinem Gerät</span><span id="gpt-offline-status" role="status">Offline-Vorrat wird vorbereitet …</span><span class="gpt-version">GPT EDITION · 1.0</span></div>
+  <details class="pr-grenzen glass" id="prWann" style="padding:14px 18px; margin:14px 0 0">
+    <summary data-i18n="pr_wann_kopf">Wann brauche ich das?</summary>
+    <p style="margin:10px 0 0" data-i18n-html="pr_wann_1"><strong>Du lieferst eine
+    App aus</strong> und hast beim Bauen einen KI-Schlüssel in eine Konfigurationsdatei
+    geschrieben. Wer die Datei öffnet, arbeitet danach auf deine Rechnung — und ein
+    veröffentlichter Schlüssel lässt sich nicht zurückholen, nur zurückziehen.</p>
+    <p style="margin:10px 0 0" data-i18n-html="pr_wann_2"><strong>Du schickst ein
+    PDF an einen Kunden.</strong> Darin stecken frühere Speicherstände, und der
+    Empfänger liest den Absatz, den du vor dem Verschicken herausgenommen hast.</p>
+  </details>
+
+  <!-- ══ VIER EINGÄNGE (2026-08-23) ═════════════════════════════════════════
+       Klaus: „ob du noch zusätzliche Container einfügen kannst mit Funktionen
+       wie PDF Prüfung vor der Auslieferung oder Textdateien Prüfung."
+       Vier gestapelte Kästen wären das „zu viel" gewesen, das er im selben
+       Atemzug beanstandet hat — also eine Leiste und EIN Kasten, der sich
+       umschaltet. Das Ergebnisfeld darunter ist für alle vier dasselbe. -->
+  <div class="pr-waehler" role="tablist" aria-label="Was soll geprüft werden?">
+    <button class="pr-reiter" type="button" role="tab" id="reiter-html"
+            aria-selected="true" aria-controls="feld-html" data-art="html" data-i18n-html="pr_06">
+      HTML-Seite<span class="pr-was">fremde Adressen, Reste, Zeilennummern</span>
+    </button>
+    <button class="pr-reiter" type="button" role="tab" id="reiter-text"
+            aria-selected="false" aria-controls="feld-text" data-art="text" data-i18n-html="pr_07">
+      Textdatei · JSON<span class="pr-was">Schlüssel, Personen, Rechnungen</span>
+    </button>
+    <button class="pr-reiter" type="button" role="tab" id="reiter-pdf"
+            aria-selected="false" aria-controls="feld-pdf" data-art="pdf" data-i18n-html="pr_08">
+      PDF<span class="pr-was">Verweise, Metadaten, Anhänge</span>
+    </button>
+    <button class="pr-reiter" type="button" role="tab" id="reiter-adresse"
+            aria-selected="false" aria-controls="feld-adresse" data-art="adresse" data-i18n-html="pr_09">
+      Adresse abrufen<span class="pr-was">eine Seite holen und prüfen</span>
+    </button>
+    <!-- ══ E-MAILS PRÜFEN (2026-09-09) ══════════════════════════════════════
+         Klaus: „E-Mail-Adressen werden eingepflegt oder eingeladen, ohne dass
+         irgendetwas passiert … es wird im Prinzip nur geprüfter Inhalt,
+         inklusive der Links … auch Befehle, die an eine KI gehen könnten."
+         Steht NACH „Adresse abrufen", wie er es gesagt hat. -->
+    <button class="pr-reiter" type="button" role="tab" id="reiter-mail"
+            aria-selected="false" aria-controls="feld-mail" data-art="mail" data-i18n-html="pr_10">
+      E-Mails prüfen<span class="pr-was">Tarnung, Anhänge, KI-Befehle</span>
+    </button>
+    <!-- ══ EINE DATEI PRÜFEN (2026-09-29) — Klaus: „Ist das nicht dann dem
+         Auslieferungsprüfer …?" Die Prüfung steht in assets/pruefer-anhang.js
+         und wird byte-1:1 in den Sende-Prüfer kopiert. -->
+    <button class="pr-reiter" type="button" role="tab" id="reiter-datei"
+            aria-selected="false" aria-controls="feld-datei" data-art="datei" data-i18n-html="pr_61">
+      Foto · Datei prüfen<span class="pr-was">JPEG, PNG, SVG, Word, Excel, ZIP</span>
+    </button>
+  </div>
+
+  <section class="glass pr-eingang" id="feld-html" role="tabpanel"
+           aria-labelledby="reiter-html" style="padding:20px">
+    <div class="pr-ablage" id="ablage">
+      <!-- ⚠ „HIERHER ZIEHEN" WAR EINE ANLEITUNG FÜR EIN GERÄT, DAS DER NUTZER
+           NICHT IN DER HAND HÄLT. Auf einem Android-Tablet gibt es weder Ziehen
+           noch Rechtsklick. Die `drop`-Behandlung im Skript bleibt — sie stört
+           am Rechner niemanden. Beworben wird sie nicht mehr. -->
+      <p style="margin:0 0 12px" data-i18n="pr_11">Wähle eine HTML-Datei — oder füge den Quelltext
+      unten ein.</p>
+      <!-- ⚠ KLAUS' FRAGE VOM 2026-09-10: „Wie kann ich den Seitenquelltext von
+           einer Internetseite auslesen oder lesen?" Auf einem Android-Tablet
+           gibt es kein „Quelltext anzeigen"; `view-source:` sperrt Chrome dort.
+           Der Weg, der IMMER geht, steht deshalb hier — und er ist der einzige,
+           der auch bei fremden Servern trägt, weil das Speichern im Browser
+           passiert und nicht am Abruf hängt. -->
+      <details class="pr-detail" style="margin:0 0 12px">
+        <summary data-i18n="pr_12">Wie du an den Quelltext einer fremden Seite kommst</summary>
+        <p style="margin:8px 0 0" data-i18n-html="pr_13">Die Seite im Browser öffnen, dann im Menü (⋮)
+        auf den <strong>Herunterladen-Pfeil</strong>. Chrome legt sie als
+        <code>.mhtml</code> in deine Downloads. Die wählst du hier aus — der
+        Prüfer packt sie aus und prüft den Seiten-Teil darin.</p>
+        <p style="margin:8px 0 0" data-i18n-html="pr_14">Das ist der Weg, der <strong>immer</strong>
+        geht. „Adresse abrufen" oben ist bequemer, scheitert aber bei vielen
+        fremden Servern an einer Sperre des Browsers — beim Herunterladen gibt
+        es diese Sperre nicht, weil die Seite ganz normal geladen wird.</p>
+      </details>
+      <p style="margin:0">
+        <input type="file" id="datei" accept=".html,.htm,.mhtml,.mht,text/html,multipart/related" style="max-width:100%">
+      </p>
+    </div>
+
+    <p style="margin:16px 0 6px" data-i18n-html="pr_15"><label for="quelle"><strong>Quelltext</strong></label></p>
+    <textarea class="pr-feld" id="quelle" spellcheck="false"
+      placeholder="Hier den Quelltext der Seite einfügen."></textarea>
+
+    <div class="pr-reihe">
+      <input class="pr-erlaubt" id="erlaubt" type="text"
+             placeholder="Eigene Adressen, durch Komma getrennt">
+      <button class="btn" id="pruefKnopf" type="button" data-i18n="pr_16">Prüfen</button>
+      <!-- ⚠ HIESS BIS 2026-08-23 „SELBSTTEST", UND DAS WAR EIN EIGENTOR.
+           Klaus: „der Selbsttest ist dann Test von der App, dann ist er
+           schlecht, weil er so viele negative Ergebnisse auswirft. Das sagt
+           mehr darüber aus, wie schlecht die App ist."
+           Er hat recht, und der Fehler war das Wort. Was der Knopf lädt, ist
+           eine ABSICHTLICH kaputte Beispielseite; die fünf Funde sind das
+           Soll-Ergebnis, nicht ein Zeugnis über das Werkzeug. Ein Knopf, dessen
+           Name das Gegenteil dessen nahelegt, was er beweist, ist eine
+           Knopf-Lüge — dieselbe Sorte wie das geliehene Icon vom 2026-08-23. -->
+      <button class="thema-knopf" id="koederKnopf" type="button"
+              title="Lädt eine absichtlich fehlerhafte Beispielseite — an ihr siehst du, wie ein Befund aussieht" data-i18n="pr_17">Test-Seite laden</button>
+      <button class="thema-knopf" id="leerKnopf" type="button" data-i18n="pr_18">Leeren</button>
+    </div>
+    <!-- ⚠ HIER STAND „ohne diese Angabe meldet der Prüfer auch deine eigene
+         Domain". Das war eine Erklärung für ein Verhalten, das seit dem
+         2026-08-23 nicht mehr nötig ist: der Browser weiss, wo er steht, und
+         die eigene Adresse steht jetzt von Anfang an im Feld. Eine Erklärung,
+         die verlangt, dass man erst ein Feld ausfüllt, ist eine Ausrede. -->
+    <p class="feldhinweis" style="margin:0" data-i18n-html="pr_19">Deine eigene Adresse steht schon
+    drin — sie gilt nicht als fremd. Prüfst du die Seite einer anderen Domain,
+    trage sie hier dazu ein, sonst meldet der Prüfer ihr eigenes
+    <code>canonical</code> als fremden Rechner.</p>
+  </section>
+
+  <!-- ══ TEXT UND JSON ═══════════════════════════════════════════════════════
+       Der Anlass ist echt und teuer: am 2026-08-22 lagen 75 Rechnungen als JSON
+       unter einer öffentlichen Adresse. Der HTML-Prüfer hätte sie DURCHGEWINKT
+       — auf einer JSON-Datei feuert kein einziges Tag. Genau diese Lücke
+       schließt dieser Eingang. -->
+  <section class="glass pr-eingang" id="feld-text" role="tabpanel"
+           aria-labelledby="reiter-text" style="padding:20px" hidden>
+    <div class="pr-ablage">
+      <p style="margin:0 0 12px" data-i18n="pr_20">Wähle eine Text-, JSON-, Markdown- oder
+      Konfigurationsdatei — oder füge den Inhalt unten ein.</p>
+      <p style="margin:0">
+        <input type="file" id="textDatei" style="max-width:100%">
+      </p>
+    </div>
+
+    <p style="margin:16px 0 6px" data-i18n-html="pr_21"><label for="textQuelle"><strong>Inhalt</strong></label></p>
+    <textarea class="pr-feld" id="textQuelle" spellcheck="false"
+      placeholder="Hier den Inhalt der Datei einfügen."></textarea>
+
+    <div class="pr-reihe">
+      <input class="pr-erlaubt" id="textPfad" type="text"
+             placeholder="Dateiname — z. B. rechnungen.json oder impressum.html">
+      <button class="btn" id="textKnopf" type="button" data-i18n="pr_22">Prüfen</button>
+      <button class="thema-knopf" id="textBeispielKnopf" type="button"
+              title="Lädt eine absichtlich undichte Beispieldatei" data-i18n="pr_23">Test-Datei laden</button>
+    </div>
+    <p class="feldhinweis" style="margin:0" data-i18n-html="pr_24">Der <strong>Dateiname</strong>
+    entscheidet mit: <code>impressum.html</code>, <code>datenschutz.html</code>
+    und <code>RECHTE.md</code> dürfen Anschrift und Mailadresse tragen — das
+    verlangt § 5 DDG. Freigestellt wird der <strong>Pfad</strong>, nie der Wert:
+    sonst schwiege dieselbe Mailadresse auch dort, wo sie versehentlich steht.</p>
+  </section>
+
+  <!-- ══ PDF ═════════════════════════════════════════════════════════════════
+       Selbst gebauter Leser, kein pdf.js — ein Megabyte aus dem Netz bräche die
+       Offline-Zusage, mit der diese Seite wirbt. Was ein PDF nicht hergibt, ist
+       die Zeilennummer; die Stelle heißt deshalb Objekt oder Seite, und das
+       steht an jedem Fund dran statt eine Genauigkeit vorzutäuschen. -->
+  <section class="glass pr-eingang" id="feld-pdf" role="tabpanel"
+           aria-labelledby="reiter-pdf" style="padding:20px" hidden>
+    <div class="pr-ablage">
+      <p style="margin:0 0 12px" data-i18n="pr_25">Wähle die PDF-Datei, die ausgeliefert werden
+      soll — ein Angebot, ein Datenblatt, eine Anleitung.</p>
+      <p style="margin:0">
+        <input type="file" id="pdfDatei" accept=".pdf,application/pdf" style="max-width:100%">
+      </p>
+    </div>
+    <p class="feldhinweis" style="margin:16px 0 0" data-i18n-html="pr_26">Gelesen wird die Datei selbst:
+    Verweise nach außen, eingebettete Aktionen, Anhänge und die
+    <strong>Metadaten</strong> — dort steht erfahrungsgemäß der Klarname dessen,
+    der das Dokument gesetzt hat, samt Programm und Uhrzeit. Der Seitentext wird
+    auf Anweisungen an eine KI, Mailadressen und Kontonummern durchsucht; was die
+    Seiten sonst sagen, muss ein Mensch lesen.</p>
+  </section>
+
+  <!-- ══ ADRESSE ABRUFEN ═════════════════════════════════════════════════════
+       Klaus wollte „richtige, echte Internetseiten" durch den Filter schicken.
+       Das geht — aber nur für Seiten DIESER Domain, und der Grund ist kein
+       technischer Mangel, sondern der Zweck des Werkzeugs. Steht auf der Seite,
+       nicht nur hier. -->
+  <section class="glass pr-eingang" id="feld-adresse" role="tabpanel"
+           aria-labelledby="reiter-adresse" style="padding:20px" hidden>
+    <p style="margin:0 0 12px" data-i18n-html="pr_27"><label for="adrFeld"><strong>Adresse der Seite,
+    die geprüft werden soll</strong></label></p>
+    <div class="pr-reihe">
+      <input class="pr-erlaubt" id="adrFeld" type="text"
+             value="https://pwa-toolpoint.de/"
+             placeholder="https://…">
+      <button class="btn" id="adrKnopf" type="button" data-i18n="pr_28">Holen und prüfen</button>
+    </div>
+    <p class="feldhinweis" style="margin:0 0 8px" data-i18n-html="pr_29">Ganze Adresse eintragen, mit
+    <code>https://</code> davor. Beispiele:</p>
+    <ul class="pr-beispiele">
+      <li><button type="button" class="pr-bsp" data-adresse="https://pwa-toolpoint.de/">https://pwa-toolpoint.de/</button> <span data-i18n="pr_bsp_hier">— der Marktplatz PWA Toolpoint</span></li>
+      <li><button type="button" class="pr-bsp" data-adresse="https://family-projekt.de/">https://family-projekt.de/</button></li>
+      <li><button type="button" class="pr-bsp" data-adresse="https://lausiklauskn-png.github.io/Sage-Protokol/">https://lausiklauskn-png.github.io/Sage-Protokol/</button></li>
+    </ul>
+    <!-- ⚠ HIER STAND, DAS WERKZEUG HOLE NUR VON DER EIGENEN DOMAIN, und als
+         Grund stand da, ein fremder Rechner „erführe deine Adresse und deinen
+         Browser". Beides war falsch. Das erfährt er bei JEDEM Seitenaufruf, und
+         Sages Verfassung erlaubt den Netz-Zugriff ausdrücklich, sobald ihn der
+         Nutzer bewusst auslöst — eine Adresse eintippen und drücken IST das.
+         Der Ratschlag daneben („sieh dir den Quelltext an") war zudem auf einem
+         Tablet gar nicht ausführbar. Klaus: „ich hab's grad probiert, geht nicht." -->
+    <p class="feldhinweis" style="margin:0" data-i18n-html="pr_33">Wie beim normalen Aufrufen einer
+    Seite erfährt der Server dabei, dass du sie abrufst — mehr nicht. Der Inhalt
+    bleibt auf deinem Gerät. <strong>Manche Server lassen sich von hier aus
+    nicht lesen</strong>; das ist eine Sperre des Browsers, keine Entscheidung
+    dieses Werkzeugs. Dann sagt die Seite es und nennt den Weg, der stattdessen
+    geht.</p>
+  </section>
+
+  <!-- ══ E-MAIL ═══════════════════════════════════════════════════════════════
+       ⚠ HIER WIRD NICHTS GEÖFFNET UND NICHTS ABGERUFEN. Kein Link wird
+       angeklickt, kein Bild geholt, kein Anhang entpackt. Das ist der Zweck,
+       nicht die Bequemlichkeit: wer eine verdächtige Mail prüft, darf sie
+       dabei nicht anfassen. Der Eingang „Adresse abrufen" darüber ist die
+       einzige Stelle dieses Werkzeugs, die ins Netz greift — diese hier nicht. -->
+  <section class="glass pr-eingang" id="feld-mail" role="tabpanel"
+           aria-labelledby="reiter-mail" style="padding:20px" hidden>
+    <div class="pr-ablage">
+      <p style="margin:0 0 12px" data-i18n-html="pr_34">Wähle eine gespeicherte Mail
+      (<code>.eml</code>) — oder füge sie unten ein.</p>
+      <p style="margin:0">
+        <input type="file" id="mailDatei" accept=".eml,.txt,message/rfc822,text/plain"
+               style="max-width:100%">
+      </p>
+    </div>
+
+    <p style="margin:16px 0 6px" data-i18n-html="pr_35"><label for="mailQuelle"><strong>Die
+    Mail</strong></label></p>
+    <textarea class="pr-feld" id="mailQuelle" spellcheck="false"
+      placeholder="Hier die Mail einfügen."></textarea>
+
+    <div class="pr-reihe">
+      <button class="btn" id="mailKnopf" type="button" data-i18n="pr_36">Prüfen</button>
+      <button class="thema-knopf" id="mailBeispielKnopf" type="button"
+              title="Lädt eine absichtlich bösartige Beispiel-Mail — alles darin ist erfunden" data-i18n="pr_37">Test-Mail laden</button>
+    </div>
+
+    <!-- ⚠ DREI WEGE, UND SIE SIND NICHT GLEICH GUT. Klaus hat nach dem
+         Weiterleiten gefragt; die Antwort steht deshalb auf der Seite und nicht
+         nur in einem Kommentar. Weiterleiten AN den Prüfer geht nicht — eine
+         Seite hat kein Postfach, und ein Postfach wäre ein Server, an den die
+         Mail ginge. Genau das soll hier nicht passieren. -->
+    <details class="pr-detail" style="margin:0 0 10px">
+      <summary data-i18n="pr_38">Wie die Mail hier hereinkommt</summary>
+      <ol style="margin:8px 0 0;padding-left:20px">
+        <li data-i18n-html="pr_39"><strong>Als Datei sichern und oben auswählen.</strong> Im
+        Mail-Programm „Nachricht herunterladen" — dabei bleibt alles erhalten:
+        Kopfzeilen, Anhänge, versteckter Text.</li>
+        <li data-i18n-html="pr_40"><strong>„Als Anhang weiterleiten"</strong> — an dich selbst, dann
+        diese Mail sichern oder einfügen. Die eingepackte Mail bleibt
+        unverändert; der Prüfer packt sie aus und urteilt über <em>sie</em>,
+        nicht über deine Weiterleitung.</li>
+        <li data-i18n-html="pr_41"><strong>Einfügen.</strong> Mail öffnen, „Original anzeigen" oder
+        „Quelltext anzeigen", alles markieren, hier einfügen.</li>
+      </ol>
+      <p style="margin:8px 0 0" data-i18n-html="pr_42"><strong>Gewöhnliches Weiterleiten</strong> geht
+      auch, ist aber der schwächste Weg: das Mail-Programm baut die Nachricht
+      dabei um, und Absender, Antwortadresse und das Echtheits-Urteil des
+      Servers gehören danach <em>deiner</em> Weiterleitung. Links, Anhänge und
+      versteckter Text werden trotzdem gefunden — und der Prüfer schreibt
+      dazu, was ihm fehlt.</p>
+      <p style="margin:8px 0 0" data-i18n-html="pr_43"><strong>An den Prüfer weiterleiten geht
+      nicht.</strong> Diese Seite hat kein Postfach. Sie könnte nur eines
+      haben, wenn die Mail an einen Server ginge — und dann wäre sie nicht
+      mehr auf deinem Gerät.</p>
+    </details>
+
+    <p class="feldhinweis" style="margin:0 0 8px" data-i18n-html="pr_44">Geht nichts davon, genügt
+    auch der sichtbare Text — dann fehlen Absender-Prüfung und Anhänge, und der
+    Prüfer <strong>sagt es</strong>, statt weniger zu prüfen und still zu
+    bleiben.</p>
+
+    <!-- ⚠ DIESER SATZ IST DIE WICHTIGSTE ZEILE DES GANZEN EINGANGS, und er
+         hängt an einer MARKE, nicht am Wortlaut: ein Wächter, der Wörter
+         festnagelt, verbietet das nächste Richtigstellen. Ein Werkzeug, das
+         „Virenprüfung" verspricht und in Wahrheit einen Dateinamen liest,
+         wäre die schlimmste Sorte Knopf — es beruhigt. -->
+    <p class="feldhinweis" style="margin:0 0 8px" data-mail-grenze="keine-virenpruefung" data-i18n-html="pr_45">
+    <strong>Das ist keine Virenprüfung.</strong> Es gibt hier keine Signaturen. Anhänge werden <em>gelesen</em>, nie ausgeführt oder angezeigt: ihr Dateikopf, ihre Metadaten, ihr Text — ob sie sind, was ihr Name behauptet. In Bildpunkten versteckte Botschaften sucht er nur auf einen eigenen Knopf, und was er findet, heißt Verdacht. Den Seitentext eines PDFs liest er (bis 100 Seiten), Text in Bildern und Scans mit einer Texterkennung auf dem Gerät, und bei einem PDF vergleicht er die ersten 10 Seiten mit ihrer Textebene. Und nichts von alldem verlässt dein Gerät.</p>
+
+    <!-- ⚠ KLAUS' FRAGE VOM 2026-09-09: „Es muss aber sehr sicher sein und kein
+         Schaden verursachen, wenn der Inhalt vom Auslieferungsprüfer gelesen
+         wird." Die Antwort gehört auf die Seite, und jeder Satz darin ist
+         gemessen, nicht zugesichert — `tests/smoke_pruefer.mjs` fährt eine
+         Mail mit Skript, onerror-Bild, Zählpixel, Rahmen und
+         javascript:-Link durch die echte Seite und misst danach nach. -->
+    <p class="feldhinweis" style="margin:0" data-mail-grenze="lesen-ist-ungefaehrlich" data-i18n-html="pr_46">
+    <strong>Und das Lesen selbst richtet nichts an.</strong> Die Mail wird als
+    <em>Text</em> behandelt, nie als Seite: kein Skript darin läuft, kein Bild
+    wird nachgeladen, kein Link wird angeklickt, kein Zählpixel meldet dem
+    Absender etwas. Im Ergebnis stehen die Zeilen als Text da — nichts davon
+    ist anklickbar. Gespeichert wird nichts.</p>
+  </section>
+
+  <section class="glass pr-eingang" id="feld-datei" role="tabpanel"
+           aria-labelledby="reiter-datei" style="padding:20px" hidden>
+    <p data-i18n="pr_62">Wähle eine Datei — ein Foto, eine Grafik, ein Word- oder Excel-Dokument, ein ZIP oder einen Anhang.</p><input type="file" id="einzelDatei" hidden>
+    <!-- 🧪 Test-Dateien (Klaus 2026-10-01): „zum Anklicken, deutlich als Test oder Beispiel
+         deklariert". Dieselben zwei Dateien wie in Workflow PDF (Hilfe → 🧪) und im
+         Sende-Prüfer (Beispiel-E-Mail mit Anhang). Ein Befund ist hier das SOLL. -->
+    <div class="pr-ablage" id="gpt-file-drop"><img src="icons/marke-96.png" width="52" height="52" alt=""><p style="font-size:19px;color:var(--text);margin:12px 0 4px"><strong data-i18n="gpt_drop">Datei hier ablegen</strong></p><p data-i18n="gpt_limit">Eine Datei pro Prüfung · bis 25 MB</p><button class="btn" type="button" id="gpt-file-picker" data-i18n="gpt_pick">Datei auswählen</button></div>
+    <div class="pr-test" data-test-dateien>
+      <p style="margin:0 0 8px" data-i18n-html="pr_64"><strong>🧪 Test-Dateien zum Ausprobieren</strong> — mit Absicht präpariert, alles darin ist erfunden. Ein Befund ist hier das Soll.</p>
+      <p style="margin:0;display:flex;flex-wrap:wrap;gap:8px">
+        <button class="thema-knopf" type="button" data-test-datei="beispiele/Testbild-versteckte-Anweisung.png" data-test-typ="image/png" data-i18n="pr_65">🧪 Test: Bild mit blasser Anweisung</button>
+        <button class="thema-knopf" type="button" data-test-datei="testvorlagen/Vorlage-0D-PDF-versteckter-Text.pdf" data-test-typ="application/pdf" data-i18n="pr_66">🧪 Test: PDF mit unsichtbarem Text</button>
+        <a class="thema-knopf" href="testvorlagen/" data-i18n="pr_67">Alle Testvorlagen</a>
+      </p>
+    </div>
+    <p class="feldhinweis" style="margin:16px 0 0" data-datei-grenze="liest-nur" data-i18n-html="pr_63">Gelesen wird der <strong>Dateikopf</strong>, nicht der Name: Daten hinter dem Bildende, Metadaten, Skripte in Grafiken, Makros und Verweise in Office-Dateien, Programme. Text in der Datei geht durch denselben Prüfer wie eine Textdatei. Text im Bild liest eine Texterkennung auf dem Gerät. Bei einem PDF vergleicht sie die ersten 10 Seiten mit ihrer Textebene: was im Text steht, auf der Seite aber nicht zu sehen ist, wird gemeldet. Ausgeführt wird nichts. In Bildpunkten versteckte Botschaften sucht er nur auf den Knopf „Bildpunkte auf Verdacht prüfen“ unter dem Ergebnis — und auch dann nur unverschlüsselten Text in einem PNG oder verlustfreien WebP.</p>
+  </section>
+
+  <p class="gpt-result-label">Prüfergebnis</p>
+  <section class="pr-ergebnis" id="ergebnis" aria-live="polite"></section>
+
+  <!-- ⚠ HIER GAB ES BISHER NICHTS ZUM MITNEHMEN. Bei 31 Funden mit
+       Zeilennummern schrieb der Nutzer sie ab oder machte Bildschirmfotos —
+       dabei liegen sie längst als Daten vor. Die Knöpfe erscheinen erst, wenn
+       es etwas mitzunehmen gibt.
+       ⚠ UND SIE STEHEN SEIT 2026-08-23 UNTER DEM ERGEBNIS, nicht mehr im
+       HTML-Kasten: es gibt jetzt vier Eingänge und nur EIN Ergebnisfeld. Im
+       HTML-Kasten hätte man den Bericht einer PDF-Prüfung nicht mitnehmen
+       können, weil die Knöpfe dann weggeklappt gewesen wären. -->
+  <div class="pr-mitreihe" id="mitreihe" hidden>
+    <button class="btn" id="berichtKnopf" type="button" data-i18n="pr_47">Bericht kopieren</button>
+    <button class="thema-knopf" id="sichernKnopf" type="button" data-i18n="pr_48">Als Textdatei sichern</button>
+  </div>
+  <!-- ⚠ DER SATZ GEHÖRT AN DEN KNOPF, NICHT IN EINEN AUFKLAPPER. Ein Knopf, der
+       einen Befund in die Zwischenablage legt, wirft bei diesem Werkzeug die
+       Frage auf, ob die gefundenen Schlüssel mitgehen — und wer sie sich stellt
+       und keine Antwort findet, drückt nicht. Bis zum 2026-09-21 gingen sie
+       wirklich mit (gemessen: 6 von 6 Werten der Test-Datei). -->
+  <p class="feldhinweis" id="mitreiheWofuer" style="margin:8px 0 0" hidden
+     data-i18n-html="pr_47_wofuer">Der Bericht enthält Befunde und Dateinamen, bei Pixelverdacht auch den gelesenen Text. <strong>Vor dem Weitergeben prüfen.</strong> Der vollständige Dateiinhalt wird nicht exportiert.</p>
+
+  <details class="pr-grenzen glass" style="padding:18px 20px">
+    <summary data-i18n-html="pr_49">Was er sucht — und was er <strong>nicht</strong> kann</summary>
+    <p data-i18n-html="pr_50">Er sucht in einer HTML-Seite nach dem, was vor der Auslieferung nicht drin
+    sein sollte: <strong>Adressen, von denen die Seite etwas nachlädt</strong>,
+    Reste aus der Bauzeit, Bilder ohne Beschreibung, Links ohne Ziel und eine
+    fehlende Sprachangabe. Jeder Fund kommt mit seiner Zeilennummer.</p>
+    <ul>
+      <li data-i18n-html="pr_51"><strong>Er führt kein JavaScript aus.</strong> Was eine Seite erst zur
+      Laufzeit nachlädt — ein <code>fetch</code>, ein per Skript eingehängtes
+      <code>&lt;script&gt;</code> — sieht er nicht. Er liest die Datei, nicht die
+      laufende Seite.</li>
+      <li data-i18n-html="pr_52"><strong>Ausgelagerte CSS-Dateien liest er nicht.</strong> Ein
+      <code>url()</code> in einer eigenen <code>.css</code>-Datei bleibt
+      unentdeckt; nur <code>&lt;style&gt;</code>-Blöcke und
+      <code>style=""</code>-Attribute in der Seite selbst werden geprüft.</li>
+      <li data-i18n-html="pr_53"><strong>Er bewertet nichts inhaltlich.</strong> Ob ein
+      <code>alt</code>-Text das Bild gut beschreibt, ob ein Link sinnvoll heißt,
+      ob der Text stimmt — das entscheidet ein Mensch.</li>
+      <li data-i18n-html="pr_54"><strong>Fülltext wird zeilenweise gesucht.</strong> Ein
+      <code>placeholder="du@example.com"</code> in einem Formular wird deshalb
+      gemeldet, obwohl er dort genau richtig ist. Diese Seite hier löst ihn
+      selbst aus — in dem Absatz, der ihn erklärt. Die Alternative wäre,
+      <code>example.com</code> ganz
+      aus der Liste zu nehmen — dann bliebe ein echter Rest im Fließtext
+      unentdeckt.</li>
+      <li data-i18n-html="pr_55"><strong>Ein <code>&lt;a href="https://…"&gt;</code> ist kein
+      Befund.</strong> Dort geht der Besucher weg, wenn er klickt; die Seite holt
+      nichts. An acht echten Seiten gemessen waren 27 von 58 Meldungen genau
+      solche Links — eine Warnung, die man nicht mehr los wird, ist keine
+      Warnung.</li>
+      <li data-i18n-html="pr_56"><strong>Bei einer E-Mail prüft er keine Viren.</strong> Anhänge werden gelesen, nie ausgeführt; kein Link wird angeklickt. Er liest, was dasteht: ob der sichtbare Text eines Links woandershin führt als der Link selbst, ob ein Anhang etwas anderes ist, als sein Name sagt, ob Text unsichtbar gemacht wurde und ob darin Anweisungen an ein KI-Programm stehen.</li>
+      <li data-i18n-html="pr_57"><strong>Eine Mail ist kein Beweis — in keine Richtung.</strong> Ein
+      Fund heißt „hier hinsehen", nicht „gefälscht": ein Rundbrief über solche
+      Angriffe enthält dieselben Sätze, und eine echte Mahnung nennt auch eine
+      Frist. Umgekehrt heißt <em>kein</em> Fund nicht, dass die Mail echt ist.</li>
+      <li data-i18n-html="pr_58"><strong>Fehlen die Kopfzeilen, prüft er weniger.</strong> Wer nur
+      den sichtbaren Text einfügt, bekommt keine Absender-Prüfung und keine
+      Anhänge zu sehen. Das steht dann im Ergebnis — ungeprüft ist nicht
+      sauber.</li>
+      <li data-i18n-html="pr_59"><strong>Der Mail-Eingang hat keine zweite Fassung.</strong> Die
+      Prüfung von HTML und Textdateien gibt es zweimal, in Python und im
+      Browser, und eine Probe vergleicht sie gegeneinander. Für E-Mails gibt es
+      diesen Zwilling nicht — hier steht eine Fassung allein.</li>
+    </ul>
+  </details>
+
+  <p class="feldhinweis" style="margin-top:22px" data-i18n-html="pr_60">
+  Gebaut in der <strong>Kimhub-Werkstatt</strong> (Ideen-Konferenz vom
+  20.&nbsp;August 2026) und an acht echten Seiten geeicht. Es gibt ihn auch als
+  Python-Werkzeug für die Kommandozeile, mit Rückgabewert für eine Prüfkette —
+  beide Fassungen liefern auf derselben Seite dieselben Befunde, und eine Probe
+  vergleicht sie Zeile für Zeile gegeneinander.</p>
+
+  <!-- ⚠ KEINE NAVIGATION IM FUSS. family-project verlinkt dort vier Bereiche,
+       weil es ein Haus mit Räumen ist. Dieses Werkzeug hat einen einzigen
+       Rückweg, und der steht schon oben rechts. Ein zweiter Satz derselben
+       Links wäre Füllung. -->
+  <footer class="pr-fussleiste">
+    <p>© 2026 Klaus Nitzsche · Auslieferungsprüfer GPT · <a href="impressum.html" data-i18n="pr_fuss_recht">Impressum &amp; Datenschutz</a></p>
+    <p data-i18n="pr_fuss_satz">Läuft im Browser. Kein Konto, kein Hochladen, keine fremde Adresse.</p>
+  <p><a href="https://lausiklauskn-png.github.io/Sendepruefer-Made-GPT/">Zum Sendeprüfer GPT</a></p></footer>
+
+</main>
+
+<script src="assets/i18n-pruefer.js?v=101"></script>
+<script src="assets/sprache.js?v=101"></script>
+<script src="assets/thema.js?v=101"></script>
+<script src="assets/pruefer.js?v=101"></script>
+<!-- ⚠ REIHENFOLGE. `pruefer-formate.js` holt sich die Fülltext-Liste aus
+     `pruefer.js` — eine zweite, eigene Liste wäre eine Drift-Quelle mit Ansage.
+     Und `pruefer-ui.js` steht zuletzt, weil es alle drei bedient. -->
+<script src="assets/pruefer-formate.js?v=101"></script>
+<script src="assets/pruefer-browser.js?v=101"></script>
+<!-- ⚠ NACH `pruefer-formate.js`: der Mail-Eingang leiht sich dessen
+     Schlüssel-Muster und die IBAN-Prüfung, statt zweite Listen zu führen.
+     Fehlt die Datei, sagt er das im Ergebnis, statt still weniger zu prüfen. -->
+<script src="assets/pruefer-mail.js?v=101"></script>
+<!-- Anhänge und einzelne Dateien öffnen — hier gepflegt, byte-1:1 im Sende-Prüfer. -->
+<script src="assets/pruefer-anhang.js?v=101"></script>
+<script src="assets/pruefer-ergebnis.js?v=101"></script>
+<script src="assets/pruefer-ui.js?v=101"></script>
+<script src="assets/pwa-gpt.js?v=101"></script>
+<!-- Knopf „Installieren" in der Kopfleiste (Klaus 2026-09-30, aus dem Sende-Prüfer). -->
+<script src="assets/installieren.js?v=101"></script>
+<!-- ══ SBKIM — der Auslieferungsprüfer als eigener Knoten im Mycel ═══════════
+     Eigene Identität, eigene Spore, das schwebende Verbinden-Fenster, die
+     Status-Pille von Modul 17 und das selbstausfüllende Siegel mit dem
+     Andock-Werkzeug darin.
+
+     ⚠ DIE KETTE STEHT NICHT HIER, sondern in `pruefer-sbkim-init.js` — sie wird
+     NACH dem Laden in der Leerlauf-Pause geholt. Dreizehn `<script>`-Zeilen an
+     dieser Stelle kosten messbar: an family-project 91 statt 100, an
+     Mein-WorkFloh 85 → 95. Diese Seite steht mit ihren Zahlen im Marktplatz.
+     Gegengemessen (3 Läufe): Noten und CLS unverändert, TBT 0 → 30–60 ms.
+
+     Die Konfiguration steht davor, weil das Andock sie beim Start liest. Und
+     `netz.js` steht ZUERST: die Relais-Liste des Prüfers liest die des
+     Marktplatzes ab, statt sie abzuschreiben — zwei Listen derselben
+     Poststellen laufen auseinander. -->
+<script src="assets/config/netz.js?v=101"></script>
+<script src="assets/config/pruefer-netz.js?v=101"></script>
+<script src="assets/pruefer-sbkim-init.js?v=101"></script>
+<!-- ⚠ EIGENE APP SEIT 2026-09-26: im Marktplatz registrierte die STARTSEITE den
+     Service-Worker, der Prüfer nicht. Als eigenständige PWA braucht er ihn selbst,
+     sonst läuft er offline nicht. -->
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+94 lokale HTML-Ressourcen-/Iconprüfungen bestanden; keine doppelten HTML-IDs.
+44 JavaScript-Dateien syntaktisch gültig.
+Offline-Vorrat: 82 Dateien, 26,382,153 Byte (25.16 MiB).
+Tag Text: berechneter Kontrast 14.42:1.
+Tag Nebenfarbe: berechneter Kontrast 5.57:1.
+Tag Knopf: berechneter Kontrast 6.67:1.
+Nacht Text: berechneter Kontrast 13.78:1.
+Nacht Nebenfarbe: berechneter Kontrast 8.13:1.
+Nacht Knopf: berechneter Kontrast 8.21:1.
+Kontrast Text: berechneter Kontrast 18.13:1.
+Kontrast Nebenfarbe: berechneter Kontrast 12.38:1.
+Kontrast Knopf: berechneter Kontrast 12.50:1.
+Dies ist eine statische Kontrolle; keine visuelle Browserabnahme und keine vollständige Barrierefreiheitsprüfung.
