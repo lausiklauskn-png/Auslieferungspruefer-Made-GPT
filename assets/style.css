@@ -1,0 +1,1551 @@
+/* ============================================================================
+ * PWA Toolpoint — geteilte Stile (alle Seiten).
+ *
+ * HERKUNFT (Klaus 2026-08-09): Vorlage ist der Marktplatz aus family-project —
+ * technisch die ausgereifteste Fassung im Netz. Von dort kommen die
+ * Farb-Marken, die Glas-Knopf-Konstruktion (.btn mit ::before/::after) und die
+ * Listing-Karten. Die nüchterne, erwachsene Haltung kommt von
+ * SB·KIMTool·Point: Mono-Akzente, sachliche Abschnitts-Marken, keine Analogien.
+ * Die Ähnlichkeit ist gewollt und wird nicht geleugnet — es ist dieselbe
+ * Familie, und der offene Markt soll man ihr ansehen.
+ *
+ * WAS BEWUSST FEHLT — und warum (jedes gemessen, nicht gemeint):
+ *
+ *  - KEIN WebGL-Hintergrund. Auf einem Gerät ohne Grafikchip — und JEDES
+ *    Prüfgerät bei PageSpeed ist eins — kostet die Dauerschleife Sekunden
+ *    Blockierzeit. Gemessen (family-project 2026-08-08): mit Hintergrund
+ *    65 · 56, ohne 89 · 94; Blockierzeit 8,9 s → 0,09 s. Klaus' Entscheid vom
+ *    selben Tag: auf einem Gerät ohne Chip GAR KEIN Hintergrund, nicht einmal
+ *    ein stehendes Bild. Hier gibt es ihn deshalb überhaupt nicht — der
+ *    Farbschleier unten ist ein reiner CSS-Verlauf und kostet nichts.
+ *
+ *  - KEINE geladene Schrift. Systemschriften sparen einen Netzweg auf dem
+ *    kritischen Pfad. Ein Markt, der mit gemessenen Ladezeiten wirbt, sollte
+ *    selbst schnell sein.
+ *
+ *  - KEIN Themen-Umschalter (noch nicht). Ein Thema, dessen Kontraste
+ *    ausgerechnet sind, ist mehr wert als drei geschätzte. Kontrast gilt PRO
+ *    Thema (Bauregel Layout 2.3) — jedes weitere ist eine eigene Rechnung.
+ *
+ * KONTRAST — ausgerechnet am 2026-08-09, nicht geschätzt:
+ *   Text  #eef2f8 auf #0b0d14 …… 17,28 : 1
+ *   Leise #9aa7b6 auf #0b0d14 ……  7,93 : 1   · auf der Karte 7,40 : 1
+ *   Akzent #6ee7d3 auf #0b0d14 … 12,97 : 1
+ *   Knopfschrift #08121a auf dem DUNKELSTEN Punkt des Verlaufs … 6,94 : 1
+ *   Fokusring #ffd166 auf #0b0d14 … 13,46 : 1
+ * Wer eine Farbe ändert, rechnet nach (Bauregel Layout 2.1/2.2) — auch die
+ * Deckkraft gehört in die Rechnung.
+ * ========================================================================== */
+
+:root {
+  /* ---- Nacht (Standard) --------------------------------------------------
+   * Warmer Bernstein auf kühlem Graphit. Family Projekt ist Minze auf
+   * Blauschwarz — dieselbe Bauart, anderer Ton. Man sieht die Verwandtschaft
+   * und verwechselt die beiden trotzdem nicht. */
+  --bg:      #0c1016;
+  --bg2:     #151b24;
+  --card:    rgba(27, 35, 48, .55);
+  --line:    rgba(255, 255, 255, .10);
+  --text:    #e9eff5;
+  --muted:   #9aa8b6;
+  --accent:  #f2b544;
+  --accent2: #7fb2e8;
+  --accent3: #b98ce0;
+  --knopftext: #1a1204;
+  --aus:     #7c8794;
+  --ok:      #46d27f;
+  /* Warnton fuer das Studio. Je Thema eigen: auf hellem Grund traegt ein
+     helles Gelb nicht (Kontrast), auf dunklem ein dunkles Braun nicht. */
+  --warn:    #e0b341;
+
+  --header-bg: rgba(12, 16, 22, .58);
+  --glow:   0 0 26px rgba(242, 181, 68, .26), 0 0 60px rgba(185, 140, 224, .14);
+  /* Der Leucht-Rand — Mechanismus 1:1 aus family-project, Farben aus den
+     EIGENEN drei Akzenten. Die Bauart ist verwandt, der Ton bleibt eigen. */
+  --rand: conic-gradient(from var(--rot, 0deg),
+            #f2b544, #b98ce0, #7fb2e8, #f2b544, #e8c98a, #f2b544);
+  --shadow: 0 12px 34px rgba(0, 0, 0, .40), 0 4px 10px rgba(0, 0, 0, .25);
+  --schleier1: rgba(127, 178, 232, .13);
+  --schleier2: rgba(242, 181, 68, .09);
+
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --focus: #ffd166;
+  --breite: 1060px;
+}
+
+/* ---- Signal — Werkstatt-Kontrast, Orange auf fast Schwarz ---------------- */
+html[data-thema="signal"] {
+  --bg:      #07090c;
+  --bg2:     #0e1319;
+  --card:    rgba(19, 26, 34, .60);
+  --line:    rgba(255, 255, 255, .12);
+  --text:    #f2f6fa;
+  --muted:   #a3b1bf;
+  --accent:  #ff8a3d;
+  --accent2: #38d6d6;
+  --accent3: #c58cff;
+  --knopftext: #180a02;
+  --aus:     #87929e;
+  --header-bg: rgba(7, 9, 12, .62);
+  --glow:   0 0 26px rgba(255, 138, 61, .30), 0 0 60px rgba(56, 214, 214, .16);
+  --rand: conic-gradient(from var(--rot, 0deg),
+            #ff8a3d, #c58cff, #38d6d6, #ff8a3d, #ffb27a, #ff8a3d);
+  --schleier1: rgba(56, 214, 214, .12);
+  --schleier2: rgba(255, 138, 61, .10);
+  --focus: #ffe14d;
+  --warn:  #ffb347;
+}
+
+/* ---- Tag — hell ---------------------------------------------------------
+ * Bernstein verschwindet auf Weiß. Hier markiert ein kräftiges Kupferbraun;
+ * der Fokusring wird Blau, weil Gold auf Hell nicht mehr zu sehen wäre. */
+html[data-thema="tag"] {
+  --bg:      #f5f6f8;
+  --bg2:     #e9ecf1;
+  --card:    rgba(255, 255, 255, .72);
+  --line:    rgba(20, 30, 45, .14);
+  --text:    #141b24;
+  --muted:   #4f5d6e;
+  --accent:  #8a5a12;
+  --accent2: #1f5fb0;
+  --accent3: #6b3fa8;
+  --knopftext: #ffffff;
+  --aus:     #5d6b7c;
+  --header-bg: rgba(245, 246, 248, .82);
+  --glow:   0 8px 26px rgba(31, 95, 176, .16);
+  /* Im hellen Thema traegt ein blasser Rand nicht — dieselben drei Toene,
+     nur die dunkleren Fassungen, die schon fuer die Schrift gelten. */
+  --rand: conic-gradient(from var(--rot, 0deg),
+            #8a5a12, #6b3fa8, #1f5fb0, #8a5a12, #a8762a, #8a5a12);
+  --shadow: 0 10px 28px rgba(20, 30, 45, .10), 0 3px 8px rgba(20, 30, 45, .07);
+  --schleier1: rgba(31, 95, 176, .09);
+  --schleier2: rgba(138, 90, 18, .07);
+  --focus: #0f3ec4;
+  /* Auf Weiss muss der Warnton dunkel sein — ein helles Gelb waere
+     unlesbar. #8a4b00 auf #e9ecf1 sind nachgerechnet 6,4 : 1. */
+  --warn:  #8a4b00;
+}
+
+/* KONTRAST — ausgerechnet am 2026-08-09, JE THEMA, nicht geschätzt.
+ * Kontrast gilt pro Thema (Bauregel Layout 2.3): eine Farbe, die im Dunkeln
+ * trägt, kann im Hellen durchfallen. Alle 36 geprüften Paare bestehen; die
+ * schwächste Stelle ist die ausgeschaltete Relais-Pille im Tag-Thema mit
+ * 4,59 : 1 (gefordert 4,5). Wer eine Farbe ändert, rechnet ALLE DREI nach —
+ * das Skript dafür steht im Kopf von tests/kontrast.mjs. */
+
+* { box-sizing: border-box; }
+
+/* ⚠ `hidden` IST NUR EINE UA-REGEL UND VERLIERT GEGEN JEDE KLASSE MIT
+   `display` (gemessen 2026-09-21). `.pr-mitreihe` trägt `display: flex` — die
+   zwei Mitnehm-Knöpfe standen damit SCHON BEIM LADEN sichtbar da, obwohl
+   `hidden` gesetzt war, und führten ins Nichts. Der Kommentar im Skript warnte
+   wörtlich davor („sonst führte ein Knopf ins Nichts"): der Code setzte
+   `hidden` treu, und das CSS hat es überstimmt.
+
+   ⚠ GEFUNDEN HAT ES EIN WÄCHTER, NICHT DAS NACHDENKEN — und zwar einer, der
+   für etwas anderes gebaut war (der Wofür-Satz und die Knopfreihe müssen
+   ZUSAMMEN verschwinden). Der Satz gehorchte, die Reihe nicht.
+
+   ⚠ UND DIE REGEL DECKT DIE FAMILIE, nicht den Einzelfall: ein Riegel an
+   `.pr-mitreihe` wäre morgen am nächsten Element blind, das `hidden` und
+   `display` zugleich trägt. Nachgezählt, bevor sie kam: von acht Klassen an
+   hidden-Elementen setzt genau eine `display` — die Regel ändert also heute
+   nur diese eine Stelle. Dieselbe Falle steht in Kimhub und in der
+   Mycel-Karte aufgeschrieben. */
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+/* ── Ein Sprungziel landet sonst UNTER der klebenden Kopfleiste ──────────────
+ * Klaus am 2026-09-21, nach dem Sichttest der ersten Detailseite: er klickt
+ * unten „Ausführlich: wie hier geprüft wird →", landet auf dem Marktplatz —
+ * und sieht die Überschrift nicht, die der Link ihm versprochen hat.
+ *
+ * Gemessen, nicht vermutet: die Kopfleiste ist `position: sticky; top: 0`, der
+ * Sprung setzt den Abschnitt auf `top: 0`, und die Überschrift steht damit bei
+ * `top: 24` — also **hinter** der Leiste. Am Handy stand bei y=100 wörtlich
+ * „Eintragen".
+ *
+ * | | Kopfleiste | Überschrift sichtbar |
+ * |---|---|---|
+ * | Tablet quer 1280 | 100 px | nein |
+ * | Handy 412 | 138 px | nein |
+ *
+ * ⚠ EINE FESTE ZAHL WÄRE AUF DER HÄLFTE DER BREITEN FALSCH. Über zehn Breiten
+ * und drei Seiten gemessen schwankt die Leiste zwischen **61 und 185 px** —
+ * der Marktplatz bricht bei 360 px in mehrere Reihen um, die Detailseite trägt
+ * eine schlankere Leiste. Deshalb setzt `assets/thema.js` `--kopf-hoehe` aus
+ * der WIRKLICHEN Höhe.
+ *
+ * ⚠ UND DER RÜCKFALL IST DIE GEMESSENE OBERGRENZE, nicht eine geratene Zahl:
+ * ohne JavaScript gilt 190 px (185 gemessen + Luft). Die Überschrift steht
+ * dann etwas tiefer als nötig — aber sie steht da. **Die Tafel bleibt
+ * unberührt: kein sichtbarer Inhalt hängt an JavaScript**, nur die Genauigkeit
+ * der Sprungweite. */
+html { scroll-padding-top: var(--kopf-hoehe, 190px); }
+
+/* ── Tastatur-Fokus sichtbar machen ──────────────────────────────────────────
+ * `:focus-visible` statt `:focus`: der Ring erscheint bei Tastatur- und
+ * Stift-Bedienung, nicht beim Mausklick auf einen Knopf. Textfelder zählen laut
+ * Norm immer als focus-visible — dort ist er also auch mit der Maus zu sehen,
+ * und das ist richtig so.
+ *
+ * `outline` und nicht `box-shadow`: ein Schatten würde die Glas-Knopf-Schatten
+ * überschreiben und die Optik zerlegen. Ein Outline liegt außerhalb, klemmt
+ * kein Layout und überschreibt nichts.
+ *
+ * `outline:none` ohne Ersatz ist hier verboten (Bauregel Layout 3.4). */
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Farbschleier statt Grafik-Schleife: zwei Radial-Verläufe, fest positioniert,
+   keine Rechenzeit je Bild. Das ist der ganze „Hintergrund". */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 78% 0%,   var(--schleier1), transparent 60%),
+    radial-gradient(55% 45% at 5% 100%,  var(--schleier2), transparent 60%);
+}
+
+.wrap { max-width: var(--breite); margin: 0 auto; padding: 0 20px; }
+.muted { color: var(--muted); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------------------------------------------------------------- Kopfleiste
+ * `min-height` an der Leiste, nicht nur an ihrem Inhalt: eine Leiste mit
+ * `flex-wrap` bricht um, sobald EIN Kind breiter wird, und schiebt dann alles
+ * darunter (Bauregel Layout 1.2 — bei Point kostete genau das 50 px auf einen
+ * Schlag). Die Höhe steht deshalb fest, bevor irgendetwas geladen ist. */
+header {
+  position: sticky; top: 0; z-index: 30;
+  background: var(--header-bg);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border-bottom: 1px solid var(--line);
+}
+.bar {
+  display: flex; align-items: center; gap: 14px;
+  min-height: 60px; flex-wrap: wrap; padding: 6px 0;
+}
+.brand {
+  display: flex; align-items: center; gap: 11px;
+  font-weight: 800; font-size: 1.14rem; color: var(--text);
+}
+.brand:hover { text-decoration: none; }
+/* Die Marke ist seit 2026-09-30 das App-Icon selbst (Schild + Paket, aus
+   Klaus' Bild, `icons/marke-96.png`). Vorher: ein weißes Zeichen auf einem
+   Verlauf (`marke.svg`). Feste Maße, also kein Sprung, wenn das Bild einen
+   Augenblick später da ist. */
+.brand .mark {
+  width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+  background: url("../icons/marke-96.png") center / cover no-repeat;
+}
+/* ---- Status-Lampen + Siegel-Platz ------------------------------------------
+ * `min-height: 34px` ist die wichtigste Zeile in dieser Datei.
+ *
+ * Modul 16 hängt sein Siegel-Abzeichen (34 × 34) NACH dem Laden in genau
+ * diesen Container. Ohne die reservierte Höhe wächst die Leiste von 9 px auf
+ * 34 px und schiebt die ganze Seite nach unten. Bei SB·KIMTool·Point gemessen:
+ * CLS 0,103 → 0,052 durch diese eine Zeile.
+ *
+ * Die Lampen selbst sind Punkte ohne Aufregung: sie leuchten nur bei einem
+ * echten Ereignis. Wo nichts passiert, leuchtet nichts — auch das ist eine
+ * Aussage, und eine ehrlichere als eine Lampe, die immer grün ist. */
+/* ⚠ UND SEIT DEM 2026-09-14 AUCH `min-width` — die Höhe war nur die halbe
+   Reservierung. Gemessen bei 380 px: die Leiste ist 59 px breit und wird 103,
+   sobald das Siegel darin hängt. Am Schreibtisch ist das folgenlos, am Handy
+   bricht die Kopfzeile dadurch um und schiebt die Navigation 47 px nach unten
+   — die ganze Seite mit (CLS 0,049). Der Kommentar darüber nennt seit jeher
+   den richtigen Grund und hat nur an die falsche Achse gedacht.
+   103 px sind gemessen, nicht geraten, und `min-width` lässt die Leiste
+   wachsen, wenn eine Lampe dazukommt. */
+.lamps {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  min-height: 34px; min-width: 103px; align-items: center;
+}
+.lamp {
+  display: inline-flex; align-items: center; gap: .35rem;
+  font-family: var(--mono); font-size: .74rem; color: var(--muted);
+}
+.lamp::before {
+  content: ""; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--aus); box-shadow: none;
+  transition: background .25s, box-shadow .25s;
+}
+.lamp.on::before   { background: var(--ok);    box-shadow: 0 0 8px var(--ok); }
+.lamp.warn::before { background: var(--gold);  box-shadow: 0 0 8px var(--gold); }
+.lamp.bad::before  { background: #ff6b6b;      box-shadow: 0 0 8px #ff6b6b; }
+.lamp.traffic-pulse::before { animation: lampen-puls .9s ease-out; }
+@keyframes lampen-puls {
+  0%   { background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+  100% { background: var(--ok);     box-shadow: 0 0 8px var(--ok); }
+}
+/* Am schmalen Bildschirm nur die Punkte — die Beschriftung würde die Leiste
+   umbrechen lassen, und eine umbrechende Kopfleiste ist eine Sprungfalle. */
+@media (max-width: 700px) { .lamp .lamp-label { display: none; } }
+
+nav.top { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+nav.top a {
+  color: var(--muted); font-size: .9rem;
+  /* 8px oben/unten + 1.6er Zeilenhöhe ≈ 37 px hoch — über den geforderten
+     24 px Berührungsziel (Bauregel Layout 3.1). */
+  padding: 8px 12px; border-radius: 10px;
+  transition: color .15s, background .2s;
+}
+nav.top a:hover, nav.top a:focus-visible {
+  color: var(--text); background: rgba(255, 255, 255, .06); text-decoration: none;
+}
+nav.top a[aria-current="page"] { color: var(--text); }
+
+/* -------------------------------------------------------------------- Flächen */
+section { padding: 34px 0; }
+section.oben { padding-top: 44px; }
+
+h1 { font-size: clamp(1.75rem, 4.4vw, 2.6rem); line-height: 1.18; margin: 0 0 14px; font-weight: 800; }
+h2 { font-size: 1.4rem; margin: 0 0 8px; font-weight: 700; }
+h3 { font-size: 1.05rem; margin: 0 0 6px; font-weight: 650; }
+
+.lead { font-size: 1.08rem; color: var(--muted); margin: 0 0 22px; max-width: 62ch; }
+.sub  { color: var(--muted); margin: 0 0 16px; max-width: 70ch; }
+/* ⚠ `white-space: pre-line` GEHÖRT NUR AN DIE HINWEISE, DIE EIN SKRIPT SCHREIBT
+   (Befund 2026-09-14). Es steht hier, weil `app.js` mehrzeilige Meldungen mit
+   `\n` setzt („Kopier dir das hier und schick es mir:\n\n…"); ohne die Regel
+   stünden die als eine Wurst da.
+   Der Preis fiel erst beim Übersetzen auf: an einem FESTEN Absatz schlagen damit
+   die Zeilenumbrüche des QUELLTEXTES durch. Zehn solche Absätze gibt es auf
+   diesen Seiten, und sie brechen dort, wo jemand beim Schreiben die Zeile
+   umgebrochen hat — also an willkürlichen Stellen, und auf jedem Schirm gleich
+   falsch. Gemessen auf der Knotenkarte: derselbe Satz war 135 px hoch (sechs
+   Zeilen) und wurde 68 px (zwei), sobald das Wörterbuch ihn einzeilig einsetzte.
+   Das war der Layout-Sprung, den diese Sitzung sich selbst gebaut hat — CLS
+   0 → 0,0104.
+   Die Regel hängt jetzt an den fünf Meldestellen, die sie brauchen; jede von
+   ihnen wird von `app.js` bzw. `knotenkarte.js` beschrieben. Wer eine sechste
+   anlegt, trägt sie hier ein — ein Wächter im Smoke vergleicht beide Listen. */
+.hinweis { color: var(--muted); font-size: .88rem; }
+#suchNotiz, #notiz, #ebNotiz, #formNotiz, #ebBildNotiz { white-space: pre-line; }
+.klein { font-size: .84rem; color: var(--muted); }
+
+/* Mono-Abschnittsmarke — die nüchterne Note von SB·KIMTool·Point. */
+.marke-klein {
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--accent); margin: 0 0 6px;
+}
+
+/* ══ DER LEUCHT-RAND STATT DES STANDARDSCHATTENS (Klaus 2026-09-08) ═══════
+ *
+ * Sein Befund: „nicht mit dem Standardschatten zu versehen. So sieht auch die
+ * Seite von anderen PWA-Shops aus, nämlich standardmäßig KI-generiert. Aber
+ * die Art, wie die Container in Family Project gestaltet sind, sieht um
+ * einiges besser aus. Also mit dem kleinen schmalen Rand drum, der leuchtet,
+ * wenn die Maus draufgeht, … dieser Schatten hinter dem Container weg."
+ *
+ * Der MECHANISMUS ist 1:1 aus `family-project/assets/style.css` — ein
+ * `conic-gradient` als Untergrund, per Maske auf einen 1,4 px schmalen Ring
+ * beschnitten (`mask-composite: xor` schneidet die Fuellung heraus, es bleibt
+ * nur der Rand). Die FARBEN kommen aus den drei eigenen Akzenten, je Thema.
+ * Die Verfassung dieses Repos: „Ähnlichkeit ja, Verwechslung nein."
+ *
+ * ⚠ DIE DREHUNG LÄUFT NUR BEI HOVER — und das ist keine Sparsamkeit aus
+ * Prinzip, sondern eine Zahl: family-project zeigt 14 Einträge, hier stehen
+ * über zwanzig. Über zwanzig dauernd rotierende `conic-gradient` sind über
+ * zwanzig Dauerlasten, und diese Seite hat gemessene 100 in der Leistung zu
+ * verlieren. Ruhend steht der Rand still und ist trotzdem da; unter dem
+ * Zeiger zieht er los. Genau das hat Klaus beschrieben: „der leuchtet, wenn
+ * die Maus draufgeht."
+ *
+ * ⚠ `@property` MACHT DIE DREHUNG ERST MÖGLICH. Ein `--rot` ohne Typ ist für
+ * den Browser eine Zeichenkette, und Zeichenketten lassen sich nicht
+ * animieren — die Umdrehung spränge von 0 auf 360 statt zu laufen. Fehlt die
+ * Unterstuetzung, steht der Rand still: er ist dann trotzdem da, nur ohne
+ * Bewegung. Fail-soft bis in die Optik.
+ */
+@property --rot { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes rand-dreht { to { --rot: 360deg; } }
+
+/* Der Platz für die Mycel-Blase (Klaus 2026-09-08). Er hält keine Höhe frei
+   und schiebt nichts: leer ist er nichts, gefüllt ist er so hoch wie die
+   Blase — die Kopfleiste richtet ohnehin mittig aus. */
+/* ⚠ DER PLATZ HÄLT SEINEN PLATZ — sonst hält er keinen (Befund 2026-09-14).
+   Das Element heißt „Platz", war aber 0×0, bis Modul 23 nach dem Laden seine
+   Pille hineinhängt (gemessen: 88×33). Beim Füllen bricht die Kopfleiste um,
+   und die Navigation rutscht 39–47 px nach unten — die ganze Seite mit.
+   Gemessen auf `origin/main`: CLS 0,049 bei 380 px. Am Schreibtisch blieb es
+   lange folgenlos, weil die Leiste dort noch Luft hatte; der Sprachknopf vom
+   2026-09-14 hat sie aufgebraucht, und seitdem schnappte es auch bei 1280 px zu
+   (CLS 0 → 0,0333). Dieselbe Falle wie der Sprach-Wähler in der Suchzeile, drei
+   Tage später, eine Stelle weiter links — EIN WÄCHTER AM EINZELFALL IST MORGEN
+   AM NACHBARN BLIND.
+   Die Maße sind gemessen, nicht geraten, und als MINDEST-Maße gesetzt: eine
+   längere Beschriftung darf wachsen, eine fehlende Pille kostet nur diesen
+   Streifen. Gemessen wird die Wirkung (CLS), nicht die Zahl. */
+.mycel-platz {
+  display: inline-flex; align-items: center;
+  min-width: 88px; min-height: 33px;
+}
+
+.glass {
+  position: relative;
+  background: var(--card); border: 1px solid transparent; border-radius: 16px;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  /* ⚠ KEIN `--shadow` MEHR. Das war der Standardschatten, den Klaus
+     beanstandet hat. Was bleibt, ist ein Hauch Tiefe — ohne ihn klebt die
+     Karte flach auf dem Grund, und „flach" war nicht die Bitte. */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .18);
+}
+.glass::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  padding: 1.4px; background: var(--rand);
+  /* Die Maske laesst nur den Ring stehen: Fuellung (content-box) minus
+     Gesamtflaeche = Rand. Ohne `-webkit-` bleibt Safari aussen vor. */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  pointer-events: none; opacity: .42; transition: opacity .22s;
+}
+.glass:hover::before,
+.glass:focus-within::before {
+  opacity: 1; animation: rand-dreht 14s linear infinite;
+}
+/* Wer „weniger Bewegung" eingestellt hat, bekommt den Rand ohne Drehung —
+   er leuchtet weiter auf, er kreist nur nicht. */
+@media (prefers-reduced-motion: reduce) {
+  .glass:hover::before, .glass:focus-within::before { animation: none; }
+}
+
+/* ------------------------------------------------------------ Glas-Knöpfe
+ * Konstruktion 1:1 aus dem family-project-Marktplatz: geschliffene Kante über
+ * inset-Schatten, darüber zwei Ebenen (::before Schimmer, ::after Kantenlicht),
+ * die dem Zeiger folgen (--mx/--my aus app.js, mit rAF gedrosselt).
+ *
+ * Ohne JavaScript stehen die Voreinstellungen 50 %/24 % — der Knopf sieht dann
+ * genauso aus, nur ohne Verfolgung. Fail-soft bis in die Optik. */
+.btn {
+  position: relative; display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--sans); font-weight: 700; font-size: .96rem; line-height: 1.2;
+  padding: 13px 22px; border-radius: 14px; border: 1px solid transparent;
+  overflow: hidden; text-decoration: none; cursor: pointer;
+  transform: perspective(640px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .14s ease, box-shadow .2s ease;
+  box-shadow:
+    inset 0 2px 1px rgba(255, 255, 255, .70),
+    inset 0 -5px 9px rgba(0, 0, 0, .52),
+    inset 11px 0 17px rgba(255, 255, 255, .07),
+    inset -11px 0 19px rgba(0, 0, 0, .42),
+    inset 0 0 0 1px rgba(255, 255, 255, .12),
+    0 14px 30px rgba(0, 0, 0, .48), 0 4px 8px rgba(0, 0, 0, .36);
+}
+.btn:hover { text-decoration: none; }
+.btn::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background:
+    radial-gradient(108px 76px at var(--mx, 50%) var(--my, 24%), rgba(255, 255, 255, .72), transparent 56%),
+    linear-gradient(180deg, rgba(255, 255, 255, .36), rgba(255, 255, 255, 0) 46%),
+    linear-gradient(115deg, transparent 26%,
+      color-mix(in srgb, var(--accent3) 62%, transparent) 43%,
+      color-mix(in srgb, var(--accent)  58%, transparent) 51%,
+      color-mix(in srgb, var(--accent2) 62%, transparent) 60%, transparent 76%);
+  background-size: auto, auto, 240% 100%;
+  background-position: 0 0, 0 0, var(--mx, 50%) 0;
+  mix-blend-mode: screen; opacity: .45; transition: opacity .22s;
+}
+.btn::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(60% 140% at var(--mx, 50%) -10%, rgba(255, 255, 255, .5), transparent 40%);
+  mix-blend-mode: screen; opacity: 0; transition: opacity .22s;
+}
+.btn:hover::before, .btn:focus-visible::before { opacity: 1; }
+.btn:hover::after,  .btn:focus-visible::after  { opacity: .85; }
+
+.btn.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent3) 60%, var(--accent2));
+  color: var(--knopftext);
+}
+.btn.primary:hover {
+  box-shadow: inset 0 2px 1px rgba(255, 255, 255, .75), inset 0 -5px 9px rgba(0, 0, 0, .5),
+              inset 0 0 0 1px rgba(255, 255, 255, .16), 0 16px 32px rgba(0, 0, 0, .5), var(--glow);
+}
+.btn.ghost {
+  background: linear-gradient(180deg, rgba(140, 150, 170, .16), rgba(18, 23, 33, .24));
+  border: 1px solid var(--line); color: var(--text);
+}
+.btn.ghost:hover {
+  border-color: var(--accent);
+  box-shadow: inset 0 2px 1px rgba(255, 255, 255, .5), inset 0 -5px 9px rgba(0, 0, 0, .5),
+              0 16px 32px rgba(0, 0, 0, .5), var(--glow);
+}
+.btn.slim {
+  padding: 7px 13px; font-size: .78rem; font-weight: 600; border-radius: 10px; gap: 5px;
+  box-shadow: inset 0 1.5px .5px rgba(255, 255, 255, .5), inset 0 -2px 4px rgba(0, 0, 0, .40),
+              inset 0 0 0 1px rgba(255, 255, 255, .08), 0 5px 14px rgba(0, 0, 0, .34);
+}
+.btn.slim:hover {
+  box-shadow: inset 0 1.5px .5px rgba(255, 255, 255, .5), inset 0 -2px 4px rgba(0, 0, 0, .42),
+              inset 0 0 0 1px color-mix(in srgb, var(--accent) 50%, transparent),
+              0 6px 16px rgba(0, 0, 0, .4), var(--glow);
+}
+.btn[disabled] { opacity: .55; cursor: not-allowed; }
+
+/* ------------------------------------------------------------------- Suche */
+.suchzeile { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+/* Das Feld traegt das Mikrofon in sich — wie in family-projekt.de. */
+.feld { position: relative; flex: 1 1 260px; min-width: 0; display: flex; }
+.suchzeile input[type="search"] {
+  flex: 1 1 auto; min-width: 0;
+  padding: 13px 46px 13px 15px; font: inherit; font-size: 1rem;
+  color: var(--text); background: var(--bg2);
+  border: 1px solid var(--line); border-radius: 14px;
+}
+.mic {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 34px; height: 34px; border-radius: 10px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1rem; line-height: 1;
+  background: transparent; border: 1px solid transparent; color: var(--muted);
+  transition: color .18s, border-color .18s, box-shadow .2s;
+}
+.mic:hover, .mic:focus-visible { color: var(--text); border-color: var(--accent); box-shadow: var(--glow); }
+/* Waehrend es zuhoert: sichtbar, ohne zu blinken (Bewegung ist abschaltbar). */
+.mic.hoert { color: var(--accent); border-color: var(--accent); box-shadow: var(--glow); }
+.mic[disabled] { opacity: .5; cursor: not-allowed; }
+
+/* Sprache fuers Mikrofon (Klaus 2026-08-12). Steht NEBEN dem Suchfeld, nicht
+   darin: das Mikrofon sitzt im Feld, und zwei Bedienelemente uebereinander
+   waeren auf dem Handy nicht zu treffen. Schmal gehalten, damit die Suchzeile
+   nicht springt; auf kleinen Schirmen rutscht sie in die naechste Reihe. */
+/* ⚠ DIE BREITE WIRD RESERVIERT, NICHT ERST BEIM FUELLEN GENOMMEN
+   (Befund 2026-09-11). Dieses `select` steht LEER in der Seite; `app.js` haengt
+   die Sprachen erst nach dem Laden hinein. Ein leeres `select` ist rund 36 px
+   breit, ein gefuelltes 176 px — und in der umbrechenden Suchzeile rutschte der
+   Knopf „Suchen" dadurch auf eine eigene Zeile. Gemessen im Trace:
+   alt[356,399,36,40] → neu[20,462,176,40], Δx=-336, Δy=63. Das war die GANZE
+   CLS der Startseite: 0,062.
+   Das ist derselbe Fehler, vor dem der Kommentar drei Zeilen ueber dem
+   Mikrofon in `index.html` ausdruecklich warnt — „ein Knopf, der nachtraeglich
+   erscheint, schiebt die Zeile um". Das Mikrofon wurde dagegen geschuetzt; der
+   Sprach-Waehler kam am 2026-08-17 daneben und brachte den Sprung zurueck, eine
+   Stelle weiter rechts. EIN WAECHTER AM EINZELFALL IST MORGEN AM NACHBARN BLIND.
+   `width` statt `max-width`: die Reservierung gilt schon, solange nichts
+   drinsteht. Schrumpfen darf es weiter (Flex-Vorgabe), damit schmale Schirme
+   sich nicht anders verhalten als vorher. */
+/* ⚠ UND SEINE HOEHE WIRD NICHT FESTGENAGELT (Klaus 2026-09-14).
+   Er stand auf `height: 40px`, waehrend Suchfeld und „Suchen"-Knopf aus ihrem
+   Innenabstand 53,6 px hoch werden. In einer Flex-Zeile richten sich alle drei
+   oben aus — die Unterkante des Waehlers lag damit 13,6 px hoeher als die der
+   Nachbarn. Klaus' Befund am Tablet: „der deutsche Button steht etwas hoeher
+   als der andere Button rechts daneben." Gemessen im Browser vor der Aenderung:
+   #suche 269,8→323,4 · #sucheMicLang 269,8→309,8 · .btn.primary 269,8→323,4.
+   Eine feste Hoehe neben Nachbarn, die ihre eigene aus Schrift und Abstand
+   rechnen, ist genau die Sorte Zahl, die beim naechsten Schriftwechsel wieder
+   danebenliegt — sie waechst nicht mit. `align-self: stretch` nimmt die Hoehe
+   der Zeile; `min-height` haelt die Fingerbreite, wenn der Waehler auf schmalen
+   Schirmen allein in seiner Reihe steht und nichts zum Strecken da ist. */
+.mic-lang {
+  width: 11rem; max-width: 11rem; align-self: stretch; min-height: 44px;
+  padding: 0 .5rem; border-radius: 10px;
+  background: var(--feld, transparent); color: var(--text);
+  border: 1px solid var(--rand, rgba(128,128,128,.35));
+  font: inherit; font-size: .9rem; cursor: pointer;
+}
+.mic-lang:hover, .mic-lang:focus-visible { border-color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .mic { transition: none; } }
+
+/* ---- Ladebalken fuers Sprachmodell --------------------------------------
+ * Das Modell ist rund 30 MB und kommt genau einmal. Ohne sichtbaren
+ * Fortschritt haelt man die Seite fuer haengengeblieben und bricht ab — die
+ * Zeile darunter hat ihre Hoehe ohnehin schon reserviert (#suchNotiz), der
+ * Balken passt also hinein, ohne etwas zu verschieben. */
+.ptbar-lbl { display: block; margin-bottom: 5px; }
+.ptbar {
+  display: block; height: 6px; border-radius: 999px; overflow: hidden;
+  background: var(--bg2); border: 1px solid var(--line);
+}
+.ptbar-fill {
+  display: block; height: 100%; border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent3), var(--accent2));
+  transition: width .25s ease;
+}
+/* Solange keine Prozentzahl kommt, wandert ein Stueck hin und her — das sagt
+   „es passiert etwas", ohne einen Fortschritt zu behaupten, den niemand kennt. */
+.ptbar-unbestimmt { width: 40%; animation: ptbar-wandern 1.15s ease-in-out infinite; }
+@keyframes ptbar-wandern { 0% { transform: translateX(-110%); } 100% { transform: translateX(260%); } }
+@media (prefers-reduced-motion: reduce) {
+  .ptbar-unbestimmt { animation: none; }
+  .ptbar-fill { transition: none; }
+}
+
+/* ---- Das Siegel in der Lampen-Leiste ------------------------------------
+ * BEFUND 2026-08-09 (headless gemessen, nicht vermutet): das Siegel war
+ * zertifiziert, im DOM, sichtbar — und **0 Pixel breit**. Modul 16 liefert
+ * sein Wappen als SVG mit `viewBox`, aber ohne `width`/`height`; in einem
+ * Flex-Kasten wird daraus nichts. Die Seite muss ihm die Groesse geben.
+ *
+ * Das ist app-eigener Klebstoff, KEIN Eingriff ins Modul — die Byte-Kopie
+ * bleibt unangetastet (Drift-Guard). */
+#sbkim-siegel-badge {
+  width: 28px; height: 28px; flex-shrink: 0; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+}
+#sbkim-siegel-badge svg { width: 100%; height: 100%; display: block; }
+#sbkim-siegel-badge:hover { box-shadow: var(--glow); }
+#sbkim-siegel-badge:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.schalter {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-top: 12px; color: var(--muted); font-size: .89rem; max-width: 64ch;
+  /* Das Kästchen selbst ist ~13 px. Padding macht das ANFASSBARE Ziel groß
+     genug, ohne die Optik zu verändern (Bauregel Layout 3.1). */
+  padding: 6px 0; cursor: pointer;
+}
+.schalter input { margin-top: 4px; width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); }
+
+/* Die Notiz-Zeile unter der Suche bekommt ihre Höhe VORHER.
+   Sie ist beim ersten Bild leer und wird erst von app.js gefüllt — eine leere
+   Zeile, die zu einer vollen wird, schiebt alles darunter (Lehre 1b). */
+#suchNotiz { min-height: 1.4em; margin: 10px 0 0; }
+
+/* ------------------------------------------------------- Weekly Discovery
+ * Aufbau wie in family-project (Kopfzeile mit Knopf, Bild links, Text rechts,
+ * Fair-Hinweis darunter), aber mit dem Zuschnitt dieser Seite: quadratisches
+ * PWA-Symbol statt Breitbild, und die Messwerte stehen mit drin — sie sind hier
+ * das Argument, nicht die Zierde.
+ *
+ * KEINE Platzreserve. Der Fund steht schon als echtes HTML in der Seite, es
+ * wird also nichts nachgeladen; und der Wechsel per ↻ ist eine Handlung des
+ * Nutzers, die Chrome nicht als Layout-Sprung zählt. Eine Reserve wäre hier
+ * genau der Fehler, der am 2026-08-09 die Liste verschlechtert hat: Platz für
+ * etwas freihalten, das gar nicht erst nachkommt. */
+.fund-kopf {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 14px;
+}
+.fund-kopf h2 { margin: 0; }
+.fund-karte {
+  display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+  padding: 18px;
+  transition: box-shadow .28s ease;
+}
+.fund-karte.blitz { box-shadow: var(--shadow), var(--glow); }
+.fund-bild {
+  width: 112px; height: 112px; flex-shrink: 0;
+  border-radius: 18px; overflow: hidden;
+  background: linear-gradient(180deg, var(--bg2), var(--bg));
+  border: 1px solid var(--line);
+  transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .14s ease, box-shadow .2s ease;
+}
+.fund-bild:hover { box-shadow: var(--glow); }
+.fund-bild img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fund-info { flex: 1 1 260px; min-width: 0; }
+.fund-info h3 { margin: 0 0 6px; font-size: 1.22rem; }
+.fund-info p { margin: 0 0 10px; color: var(--muted); font-size: .94rem; line-height: 1.5; }
+.fund-info .messwerte { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; align-items: center; }
+.fund-fair { margin-top: 12px; }
+
+/* ----------------------------------------------------------- Listing-Karten */
+.listings {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px; margin-top: 8px;
+}
+/* HIER STAND EINE PLATZRESERVE — und sie war der Fehler. Nachtrag 2026-08-09.
+ *
+ * Die Vorlage (family-project) hält den Platz der Liste mit
+ * `.listings:not(.gefuellt){min-height:70vh}` frei und gibt ihn nach dem
+ * Zeichnen wieder ab. Wörtlich übernommen hat das hier CLS 0,105 auf 0,136
+ * VERSCHLECHTERT: dort stehen vierzehn Einträge, hier steht keiner. Beim
+ * Freigeben verschwand also ein halber Bildschirm, und alles darunter sprang
+ * hoch.
+ *
+ * Eine Reserve ist richtig für Inhalt, der KOMMT. Kommt keiner, ist sie selbst
+ * der Sprung. Die Einträge stehen deshalb jetzt als echtes HTML in der Seite
+ * (`node tools/statische-listen.mjs`) — dann muss nichts reserviert und nichts
+ * freigegeben werden, bei null Einträgen so wenig wie bei hundert.
+ *
+ * Die Lehre ist allgemeiner als dieser eine Fall: eine Regel, die anderswo
+ * gemessen wurde, gilt unter den Bedingungen, unter denen sie gemessen wurde.
+ * Hier war die Bedingung „die Liste ist voll" — und die galt nicht. */
+
+/* Die Zählzeile über der Liste. Sie ist beim ersten Bild leer und bekommt
+ * ihren Text erst vom Skript — genau der Sprung, den family-project am
+ * 2026-08-05 mit 0 → 0,006 gemessen hat (`#mkCount`, Δy = +31 px).
+ *
+ * Diese Reserve wird NICHT wieder abgegeben: sie ist so hoch wie der Inhalt,
+ * der hineinkommt, und stört deshalb auch dann nicht, wenn die Zeile leer
+ * bleibt (null Einträge). */
+#anzahl { min-height: 1.5em; }
+
+/* ---- Eintrags-Karte: offen bleibt nur, was zählt -------------------------
+ * Klaus 2026-08-09: „nicht so viel Text auf einmal, der Text soll erscheinen,
+ * wenn er relevant ist … außer die App-Beschreibung, die Messwerte und das
+ * PWA-Symbol, die sollen immer zu sehen sein."
+ *
+ * Also drei Dinge dauerhaft — Symbol · Beschreibung · Messwerte — und alles
+ * Weitere hinter einem Klick. Gebaut mit `<details>`/`<summary>`, NICHT mit
+ * eigenem JavaScript: der Browser bringt Tastatur-Bedienung, die Vorlese-Ansage
+ * („eingeklappt"/„ausgeklappt") und das Öffnen per Enter von selbst mit. Und es
+ * funktioniert, wenn kein Skript läuft — ein Aufklapper, der ohne JavaScript
+ * tot wäre, wäre genau der tote Knopf, den wir nicht bauen.
+ *
+ * Kein Sprung-Problem: das Aufklappen löst der Nutzer selbst aus, und was er
+ * selbst anstößt, zählt Chrome nicht als Layout-Sprung. */
+.listing {
+  position: relative; padding: 0; overflow: hidden;
+  display: flex; flex-direction: column;
+  /* Anheben UND neigen — die Reihenfolge zählt: erst die Perspektive, dann die
+     Verschiebung, sonst wandert die Karte beim Kippen aus ihrer Spur. */
+  /* perspective(1000px) wie in family-project — dort ist der Maus-Effekt
+     zuhause, und zwei verschiedene Tiefen an derselben Karten-Art waeren ein
+     Unterschied ohne Grund. */
+  transform: perspective(1000px)
+             rotateX(var(--kipp, 0deg))
+             rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+             translateY(var(--lift, 0px));
+  transition: transform .18s ease, box-shadow .18s, opacity .18s;
+}
+
+/* ───────────────── Wegkippen an BEIDEN Rändern (Klaus 2026-08-13) ─────────
+ *
+ * ⚠ DIES ERSETZT DIE „WALZE" VOM SELBEN TAG. Die war eine durchgehend
+ * mitlaufende Verzerrung: die Karte war die ganze Zeit ein bisschen schief,
+ * während sie hochwanderte. Klaus' Urteil: „sieht nicht gut aus, weil's
+ * einfach nicht plastisch passt." Er hat recht — eine Dauer-Verzerrung liest
+ * sich als Matsch, nicht als Raum.
+ *
+ * SEIN BILD STATTDESSEN: die Karte bleibt VÖLLIG NORMAL, bis zwei Drittel von
+ * ihr oben aus dem Bild sind. Dann kippt sie in EINER eigenen Bewegung nach
+ * hinten weg — wie ein Domino, der von dir wegfällt. Anfang und Ende, deutlich
+ * zu sehen. Zurückgescrollt kommt sie wieder nach vorn.
+ *
+ * DER UNTERSCHIED IST GRUNDSÄTZLICH: nicht mehr eine Animation, die am
+ * Scroll-Fortschritt hängt, sondern eine SCHWELLE, die eine Bewegung auslöst.
+ * Deshalb liegt das Auslösen in `app.js` — und dort in LAYOUT-Werten, nicht in
+ * einem `IntersectionObserver` (der misst die Karte so, wie sie gekippt ist,
+ * und das flackerte; die volle Begründung steht in `app.js`).
+ *
+ * ⚠ BEIDE RÄNDER, seit Klaus' zweitem Blick am 2026-08-13:
+ * „in die andere Richtung sieht man es kaum … es müsste theoretisch ja unten
+ * zu sehen sein, wie die hochkommen." Bis dahin stand hier ausdrücklich, eine
+ * Karte, die von unten hereinkommt, solle NICHT kippen — begründet damit, dass
+ * Klaus es nicht beschrieben hatte. Jetzt hat er es beschrieben. Also spiegelt
+ * sich der Effekt am unteren Rand, statt dass er dort fehlt.
+ *
+ * DAS SCHARNIER SITZT IMMER AN DER SICHTBAREN KANTE. Oben fällt die Karte um
+ * ihre UNTERE Kante nach hinten (`50% 100%`, +78°), unten um ihre OBERE
+ * (`50% 0`, −78°). Beides ist dieselbe Bewegung, an der jeweils anderen Kante
+ * aufgehängt — deshalb sieht die aufkommende Karte aus, als klappe sie sich
+ * von unten herein. Beim Umschalten steht die Drehung auf 0°, da ist der
+ * Ursprung noch wirkungslos; es springt also nichts.
+ *
+ * LANGSAM WEG, SCHNELL ZURÜCK. Das Kippen soll man sehen (.42 s), die Rückkehr
+ * ist ein „schwupp" (.18 s aus dem Grundzustand). Genau so hat Klaus es
+ * beschrieben — und beim zweiten Blick ausdrücklich bestätigt: „das Aufklappen
+ * funktioniert schon sehr gut."
+ */
+.listing.kipp-weg,
+.listing.kipp-rein {
+  opacity: 0;
+  /* Eine Karte, die man nicht sieht, soll auch keine Klicks fangen. */
+  pointer-events: none;
+  transition: transform .42s cubic-bezier(.2, .7, .3, 1), opacity .34s ease,
+              box-shadow .18s;
+}
+.listing.kipp-weg  { --kipp:  78deg; transform-origin: 50% 100%; }
+.listing.kipp-rein { --kipp: -78deg; transform-origin: 50% 0; }
+
+/* Wer „weniger Bewegung" eingestellt hat, bekommt die flache Liste. Der
+   Auslöser in `app.js` steigt dafür schon vorher aus — dies hier ist der
+   ZWEITE Riegel, und er ist wichtiger als er aussieht: ohne ihn könnte eine
+   Karte mit `opacity: 0` stehen bleiben, und dann wäre Inhalt unsichtbar,
+   ohne dass jemand den Grund sähe. */
+@media (prefers-reduced-motion: reduce) {
+  .listing.kipp-weg,
+  .listing.kipp-rein {
+    --kipp: 0deg; opacity: 1; pointer-events: auto; transition: none;
+  }
+}
+/* ⚠ NUR NOCH DER SCHEIN, KEIN SCHATTEN. Vorher stand hier
+   `var(--shadow), var(--glow)` — der Standardschatten also auch beim Anheben.
+   Der Rand traegt den Effekt jetzt; ein Schatten daneben waere genau das
+   Plumpe zurueck, das Klaus beanstandet hat. */
+.listing:hover { --lift: -3px; box-shadow: var(--glow); }
+
+
+/* Das Symbol der App — quadratisch, nicht als Breitbild beschnitten. Ein
+   PWA-Icon ist ein Zeichen, kein Foto. */
+.listing .img {
+  width: 56px; height: 56px; flex-shrink: 0;
+  border-radius: 14px; overflow: hidden;
+  background: linear-gradient(180deg, var(--bg2), var(--bg));
+  border: 1px solid var(--line);
+}
+.listing .img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.listing summary {
+  display: flex; gap: 12px; align-items: flex-start;
+  /* Etwas enger als vorher (14/16). Bei vierzehn Karten summieren sich vier
+     gesparte Pixel je Karte zu einer halben Bildschirmhöhe. */
+  padding: 12px 14px; cursor: pointer; list-style: none;
+  /* Symbol und Text stehen nebeneinander; das Zahlen-Band und „Mehr zeigen"
+     brechen darunter auf die VOLLE Kartenbreite um (Klaus 2026-08-13, siehe
+     `.listing .fakten`). */
+  flex-wrap: wrap;
+}
+.listing .fakten, .listing .mehr { flex: 1 0 100%; }
+.listing summary::-webkit-details-marker { display: none; }
+.listing summary:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+.listing .kopf { min-width: 0; flex: 1 1 auto; }
+.listing h3 { margin: 0 0 5px; font-size: 1.02rem; line-height: 1.25; }
+/* Auf DREI Zeilen geklemmt (Klaus 2026-08-12: „die Container sind sehr groß …
+   bei mehr Apps scrollt man ewig zur letzten").
+   In einer 260-px-Spalte wurden aus 220 Zeichen sechs bis acht Zeilen — der
+   mit Abstand größte Teil der Kartenhöhe. Drei Zeilen sagen, worum es geht;
+   der Rest steht auf der Seite der App selbst.
+   GEKLEMMT, NICHT GEKÜRZT: der volle Text bleibt im Markup und damit für
+   Suchmaschinen und Vorlese-Programme lesbar. Und weil alle Karten dadurch
+   gleich hoch werden, sieht auch das Raster endlich ruhig aus. */
+.listing .beschreibung {
+  margin: 0 0 8px; color: var(--muted); font-size: .88rem; line-height: 1.4;
+  /* ZWEI Zeilen seit dem 2026-08-13 (vorher drei). Klaus wollte die Karten
+     „noch ein Stück kürzer"; das ist die Stelle, an der es am wenigsten weh
+     tut — wer mehr wissen will, klappt auf oder geht auf die Seite der App. */
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  line-clamp: 2; overflow: hidden;
+}
+
+/* Der Hinweis, dass es mehr gibt. Dreht sich beim Öffnen — mehr Anzeige
+   braucht es nicht, und weniger wäre zu wenig. */
+.listing .mehr {
+  font-family: var(--mono); font-size: .72rem; color: var(--accent);
+  display: inline-flex; align-items: center; gap: 6px; min-height: 24px;
+}
+.listing .mehr::before { content: "▸"; transition: transform .18s; }
+.listing[open] .mehr::before { transform: rotate(90deg); }
+.listing .mehr .wort-zu { display: none; }
+.listing[open] .mehr .wort-zu { display: inline; }
+.listing[open] .mehr .wort-auf { display: none; }
+
+/* Messwerte — immer sichtbar, mit Datum. Vier kleine Felder, keine Ampel-Show:
+   die Zahl steht da, auch wenn sie schlecht ist. */
+/* Zahlen UND Häkchen in einem Band, dicht gesetzt. Vorher zwei Absätze mit je
+   eigenem Abstand; auf einer schmalen Spalte ergab das fünf Reihen. */
+.listing .fakten { margin: 0 0 8px; }
+
+/* FESTES 2×2-RASTER (Klaus 2026-08-13: „so wie der Container von WorkFloh
+   gebaut ist, ist es optimal — alle vier Messwerte in zwei Reihen").
+   Vorher flossen die vier Felder frei um. Weil „Bedienbarkeit" lang und
+   „Leistung" kurz ist, wurden daraus je nach Spaltenbreite zwei, drei oder
+   vier Reihen — jede Karte sah anders aus, und WorkFloh traf es nur zufällig
+   gut. Ein Raster trifft es IMMER: zwei Reihen, zwei Spalten, fertig.
+   Nebenbei stehen die Zahlen dadurch untereinander und lassen sich zwischen
+   zwei Apps wirklich vergleichen — vorher standen sie versetzt. */
+/* ⚠ `minmax(0, 1fr)`, NICHT `1fr` (Klaus 2026-08-13). Ein blankes `1fr` hat als
+   Mindestbreite den Inhalt — es schrumpft also NICHT unter das, was drinsteht.
+   Genau daran lag der Umbruch in der großen Ansicht: „Auffindbarkeit 100"
+   braucht 120 px und nahm sie sich aus der halben Spalte (105 px). Für „Gute
+   Praxis" blieben 89 statt 105, und es brach zweizeilig um. Bei „Auffindbarkeit
+   90" (Kim-Bell) und „91" (WorkFloh) reichte es knapp — deshalb sahen genau
+   diese zwei Karten richtig aus, und es wirkte wie zwei verschiedene Bauweisen.
+   Es war dieselbe Bauweise mit einer Stelle mehr.
+   `minmax(0, 1fr)` erlaubt das Schrumpfen und macht beide Spalten exakt gleich
+   breit — auf jeder Karte, unabhängig davon, ob dort 90 oder 100 steht. */
+.listing .messwerte {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 4px; margin: 0;
+}
+.listing .messwerte .mw { justify-content: space-between; }
+/* Das Datum steht seit dem Umbau eine Zeile tiefer bei den Häkchen. Steht es
+   ausnahmsweise doch hier (Fund der Woche), nimmt es die volle Breite. */
+.listing .messwerte .messdatum { grid-column: 1 / -1; }
+
+/* Datum und Häkchen teilen sich EINE Zeile. Beide sind kurz; zwei eigene
+   Reihen dafür waren Verschwendung — und Kartenhöhe ist hier das knappe Gut. */
+.listing .fakten-fuss {
+  margin: 4px 0 0; display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 3px 9px;
+}
+.mw {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--mono); font-size: .68rem;
+  padding: 2px 6px; border-radius: 6px;
+  border: 1px solid var(--line); color: var(--muted); background: var(--bg2);
+}
+.mw b { font-weight: 700; color: var(--text); }
+.mw.gut b     { color: var(--ok); }
+.mw.mittel b  { color: var(--accent); }
+.mw.schwach b { color: #ff7b7b; }
+html[data-thema="tag"] .mw.schwach b { color: #b3261e; }
+.listing .messdatum { font-family: var(--mono); font-size: .68rem; color: var(--muted); }
+/* „seit März 2026" — dieselbe Schrift und Größe wie das Messdatum, denn es
+   steht in derselben Zeile und ist dieselbe Art von Angabe: eine Tatsache mit
+   Datum. Etwas heller gesetzt, weil es die Sortierung der Liste erklärt und
+   nicht nur eine Fußnote ist (Klaus 2026-08-15). */
+.listing .seit {
+  font-family: var(--mono); font-size: .68rem; color: var(--text); opacity: .75;
+}
+
+/* Die Ampel des Wächters (docs/RAUSWURF-REGEL.md). Steht IM Summary, also
+   immer sichtbar — eine Sperre hinter „Mehr zeigen" wäre keine.
+
+   KONTRAST: der Text bleibt `var(--text)`, gefärbt sind nur Rand, Fläche und
+   das Zeichen. Damit gilt der Kontrast in allen drei Themen unverändert weiter
+   und muss nicht je Thema neu ausgerechnet werden (Bauregel Layout 2.3). */
+.listing .wache {
+  margin: 0 0 10px; padding: 7px 10px; border-radius: 8px;
+  font-size: .82rem; line-height: 1.4; color: var(--text);
+  border: 1px solid var(--line); background: var(--bg2);
+}
+.listing .wache b { font-weight: 700; }
+.listing .wache small { color: var(--muted); font-family: var(--mono); font-size: .7rem; }
+.listing .wache.is-gelb { border-color: color-mix(in srgb, var(--warn) 60%, transparent); }
+.listing .wache.is-rot  { border-color: color-mix(in srgb, #ff7b7b 60%, transparent); }
+.listing .wache.is-gelb span[aria-hidden] { color: var(--warn); }
+.listing .wache.is-rot  span[aria-hidden] { color: #ff7b7b; }
+html[data-thema="tag"] .listing .wache.is-rot { border-color: color-mix(in srgb, #b3261e 60%, transparent); }
+html[data-thema="tag"] .listing .wache.is-rot span[aria-hidden] { color: #b3261e; }
+/* Das GERECHNETE Gelb (Schritt 4). Es sieht anders aus als das geschaltete —
+   gestrichelt statt durchgezogen —, weil es etwas anderes ist: kein Urteil
+   eines Menschen, sondern eine Zählung, die von allein wieder verschwindet.
+   Gefärbt bleibt nur der Rand; der Text steht auf `var(--text)`, damit der
+   Kontrast in allen drei Themen unverändert gilt (Bauregel Layout 2.3). */
+.listing .wache.ist-gerechnet { border-style: dashed; }
+/* Der Fremd-Hinweis. Bewusst LEISER als die Wache: die ist eine Warnung, dies
+   ist eine Einordnung. Deshalb kein Kasten, nur eine Kante — und der Text steht
+   auf `var(--text)`, nicht auf `--muted`, damit der Kontrast in allen drei
+   Themen unverändert gilt (Bauregel Layout 2.3). Ein Satz, der wegen seiner
+   Farbe schlecht zu lesen ist, sagt nichts. */
+.listing .fremd-hinweis {
+  margin: 0 0 10px; padding: 2px 0 2px 9px;
+  border-left: 2px solid var(--line);
+  font-size: .8rem; line-height: 1.4; color: var(--text);
+}
+.listing .fremd-hinweis b { font-weight: 700; }
+.listing .fremd-hinweis span[aria-hidden] { color: var(--muted); }
+
+/* Der aufgeklappte Teil. */
+.listing .mehrteil {
+  padding: 14px 16px 16px; border-top: 1px solid var(--line); margin-top: 2px;
+}
+.listing .by { font-family: var(--mono); font-size: .74rem; color: var(--accent); margin: 0 0 8px; }
+.listing .aktionen { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+/* Aufklapper auch für die Erklär-Karten — gleiche Bauart, gleiche Regel:
+   die Überschrift steht, der Text kommt auf Wunsch. */
+.karte > summary {
+  cursor: pointer; list-style: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  min-height: 28px; font-size: 1rem; font-weight: 650;
+}
+.karte > summary::-webkit-details-marker { display: none; }
+.karte > summary::after { content: "▸"; color: var(--accent); transition: transform .18s; }
+.karte[open] > summary::after { transform: rotate(90deg); }
+.karte > summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.karte > p { margin: 10px 0 0; }
+
+/* ---- Themen-Knopf --------------------------------------------------------
+ * Ein echter <button>, kein <span>. Ein Element, das etwas auslöst, muss mit
+ * der Tastatur erreichbar sein — als <span> ist es das nicht. */
+.thema-knopf {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 32px; padding: 6px 12px;
+  font-family: var(--mono); font-size: .76rem;
+  color: var(--muted); background: var(--bg2);
+  border: 1px solid var(--line); border-radius: 999px; cursor: pointer;
+  transition: color .18s, border-color .18s;
+}
+.thema-knopf:hover { color: var(--text); border-color: var(--accent); }
+
+/* ---- „alle Knöpfe bewegen sich" (Klaus 2026-08-09) -----------------------
+ * In family-project neigen sich nicht nur die großen Glas-Knöpfe zum Zeiger,
+ * sondern auch Pillen, Kopfleisten-Links und die Karten. Hier war das bisher
+ * auf `.btn` beschränkt.
+ *
+ * Die Neigung selbst kostet nichts: `--rx`/`--ry` stehen auf 0deg, solange
+ * niemand mit einem echten Zeiger darüberfährt (app.js setzt sie nur dann).
+ * Auf dem Tablet bleibt also alles genau so, wie es ist — Finger-Geräte werden
+ * gar nicht erst verfolgt.
+ *
+ * Der WANDERNDE Halo (`.btn::before`) bleibt bewusst nur auf den Knöpfen: über
+ * eine ganze Kartenliste gelegt wäre er Unruhe, kein Effekt. */
+.thema-knopf, .relais-pille, nav.top a {
+  transform: perspective(560px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: color .18s, border-color .18s, background .2s,
+              transform .14s ease, box-shadow .2s ease;
+}
+.thema-knopf:hover, .relais-pille:hover, nav.top a:hover { box-shadow: var(--glow); }
+
+/* ------------------------------------------------------- Knotenkarte (versteckt)
+ * Die Zeichenfläche bekommt ihr Seitenverhältnis über `aspect-ratio` — damit
+ * steht ihre Höhe fest, BEVOR das Skript zeichnet. Ein Bereich, den erst ein
+ * Skript füllt, ist sonst beim ersten Bild leer und schiebt beim Füllen alles
+ * darunter weg. */
+.karten-flaeche { padding: 10px; }
+.karten-flaeche svg { display: block; width: 100%; height: auto; aspect-ratio: 800 / 460; }
+
+/* Relais-Pillen: klicken schaltet an und aus. `min-height` hält sie über den
+   geforderten 24 px Berührungsziel. */
+.relais-leiste { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+/* AUS-Zustand über die FARBE, nicht über die Deckkraft.
+ *
+ * Zuerst stand hier `opacity: .55`. Gemessen am 2026-08-09 (Lighthouse an der
+ * Knotenkarte, Barrierefreiheit 96): der Text kam damit auf **3,06 : 1**,
+ * gefordert sind 4,5. Die Deckkraft blasst eben nicht nur die Schrift ab,
+ * sondern auch den Grund darunter — beide rücken zusammen, und der Abstand
+ * schrumpft. Genau davor warnt die Bauregel „Deckkraft mitrechnen": wer den
+ * Kontrast über die Farbe repariert, während ein `opacity` darüber liegt,
+ * repariert nichts.
+ *
+ * `#7c8794` auf `#11151f` sind nachgerechnet **5,00 : 1** und trotzdem
+ * deutlich matter als der An-Zustand. Der Unterschied wird zusätzlich vom
+ * Punkt getragen (grau gegen grün leuchtend) — der Zustand hängt also nicht an
+ * der Farbe allein. */
+.relais-pille {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 32px; padding: 6px 12px;
+  font-family: var(--mono); font-size: .78rem;
+  color: var(--aus); background: var(--bg2);
+  border: 1px solid var(--line); border-radius: 999px;
+  cursor: pointer;
+  transition: border-color .18s, color .18s;
+}
+.relais-pille .punkt {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  background: var(--muted);
+}
+.relais-pille.an { color: var(--text); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+.relais-pille.an .punkt { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+.relais-pille:hover { color: var(--text); border-color: var(--accent); }
+
+/* ------------------------------------------------------------------ Kästen */
+.note-box {
+  padding: 18px 20px; border-left: 3px solid var(--accent3);
+}
+.note-box p { margin: 0 0 8px; }
+.note-box p:last-child { margin-bottom: 0; }
+
+.raster {
+  display: grid; gap: 14px; margin: 6px 0 18px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.karte { padding: 16px; }
+.karte p { margin: 0; color: var(--muted); font-size: .92rem; }
+
+/* --------------------------------------------------------------- Formulare */
+.form-grid { display: grid; gap: 14px; max-width: 580px; }
+.field { display: grid; gap: 6px; }
+.field > span { font-size: .92rem; }
+.field > span em { color: var(--muted); font-style: normal; }
+.field input, .field textarea {
+  padding: 12px 14px; font: inherit; font-size: .98rem; width: 100%;
+  color: var(--text); background: var(--bg2);
+  border: 1px solid var(--line); border-radius: 12px; resize: vertical;
+}
+.form-grid button { justify-self: start; }
+/* Auch diese Zeile bekommt ihre Höhe vorher — sie wird erst beim Absenden
+   gefüllt und läge sonst als Sprung unter dem Knopf. */
+#formNotiz { min-height: 1.4em; margin: 0; }
+
+/* Feld-Hinweise: der kleine Satz unter einem Feld, der sagt, was erwartet
+   wird. Er steht DA, bevor jemand etwas falsch macht — nicht als Fehler
+   hinterher. */
+.feldhinweis { font-size: .82rem; color: var(--muted); line-height: 1.45; }
+.feldhinweis code {
+  font-family: var(--mono); font-size: .95em;
+  background: var(--bg2); padding: 1px 5px; border-radius: 5px;
+}
+
+/* Bild-Feld mit Vorschau. Die Vorschau hat ihre Maße VON ANFANG AN — sonst
+   springt das Formular in dem Moment, in dem ein Bild geladen wird. */
+.bildfeld { display: grid; grid-template-columns: 148px 1fr; gap: 14px; align-items: start; }
+.bildvorschau {
+  aspect-ratio: 16 / 9;
+  border: 1px dashed var(--line); border-radius: 12px;
+  background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; text-align: center; padding: 8px;
+}
+.bildvorschau-leer { font-size: .76rem; color: var(--muted); }
+.bildvorschau-bild { width: 100%; height: 100%; object-fit: cover; display: block; }
+.bildsteuer { display: grid; gap: 8px; min-width: 0; }
+.bildsteuer input { width: 100%; }
+@media (max-width: 560px) {
+  .bildfeld { grid-template-columns: 1fr; }
+  .bildvorschau { max-width: 220px; }
+}
+
+/* Der Aufklapper mit den Bedingungen sitzt im Formular-Raster und soll dort
+   nicht wie ein Eingabefeld wirken. */
+.form-grid > details.note-box { padding: 14px 18px; }
+.form-grid > details.note-box > summary {
+  cursor: pointer; list-style: none; font-weight: 650; font-size: .95rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  min-height: 26px;
+}
+.form-grid > details.note-box > summary::-webkit-details-marker { display: none; }
+.form-grid > details.note-box > summary::after { content: "▸"; color: var(--accent); transition: transform .18s; }
+.form-grid > details.note-box[open] > summary::after { transform: rotate(90deg); }
+.form-grid > details.note-box > summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.form-grid > details.note-box p { margin: 10px 0 0; font-size: .9rem; color: var(--muted); }
+.form-grid > details.note-box p strong { color: var(--text); }
+
+/* Die Meldezeile unter dem Absenden-Knopf trägt im Fehlerfall den fertigen
+   Eintrag zum Kopieren — sie muss also Zeilenumbrüche behalten. */
+#ebNotiz { min-height: 1.4em; margin: 0; }
+
+/* Bot-Falle: für Menschen unsichtbar, für Vorlese-Programme ausgeblendet.
+   NICHT `display:none` — manche Bots erkennen das und lassen das Feld dann
+   leer, womit die Falle nichts mehr fängt. */
+.honig {
+  position: absolute !important; left: -9999px !important; top: auto;
+  width: 1px; height: 1px; overflow: hidden;
+}
+
+/* ------------------------------------------------------- Melden (Dialog)
+ * Ein natives <dialog>. Es liegt in der obersten Ebene des Browsers und
+ * schwebt deshalb auch dann über der Seite, wenn dieses CSS gar nicht
+ * ankommt — etwa nach einem vergessenen Cache-Bump. Was hier steht, ist
+ * Optik, keine Funktion.
+ *
+ * `::backdrop` erbt die Variablen der Seite nicht, darum steht die Farbe
+ * dort roh. */
+.melde-dlg {
+  border: 1px solid var(--line); border-radius: 16px;
+  background: var(--bg2); color: var(--text);
+  padding: 20px; width: min(92vw, 460px);
+}
+.melde-dlg::backdrop { background: rgba(0, 0, 0, .55); }
+.melde-dlg h3 { margin: 0 0 6px; font-size: 1.05rem; }
+.melde-form { display: flex; flex-direction: column; gap: 10px; }
+.melde-gruende { display: flex; flex-direction: column; gap: 7px; }
+.melde-grund {
+  display: flex; gap: 8px; align-items: flex-start;
+  font-size: .92rem; line-height: 1.35; cursor: pointer;
+}
+/* Die Fläche zum Antippen muss auf dem Tablet zu treffen sein. */
+.melde-grund input { margin-top: .2em; min-width: 18px; min-height: 18px; }
+/* Die Zusage an den Anbieter. Abgesetzt, damit sie nicht als Kleingedrucktes
+   untergeht — sie ist der Grund, warum ein Eintrag ohne Nachfrage entstehen
+   darf. Farbe und Rahmen kommen aus den Themen-Marken, damit alle drei Themen
+   ohne eigene Rechnung auskommen. */
+.melde-zusage {
+  margin: 0; padding: 8px 10px;
+  border-left: 3px solid var(--accent);
+  background: var(--bg2);
+  border-radius: 0 8px 8px 0;
+}
+.melde-dlg textarea {
+  width: 100%; box-sizing: border-box; resize: vertical;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--bg); color: var(--text); padding: 8px 10px; font: inherit;
+}
+/* Die Rückmeldung trägt Zeilenumbrüche: im Fehlerfall steht dort der fertige
+   Text zum Kopieren, damit die Arbeit nicht verloren geht. */
+.melde-notiz {
+  margin: 0; min-height: 1.2em; font-size: .88rem;
+  color: var(--muted); white-space: pre-wrap;
+}
+.melde-knoepfe { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* --------------------------------------------- Woher die Zahlen (Dialog)
+ * Dieselbe Bauart wie der Melde-Dialog: ein natives <dialog> in der obersten
+ * Ebene des Browsers. Es schwebt deshalb auch dann über der Seite, wenn dieses
+ * CSS gar nicht ankommt — etwa nach einem vergessenen Cache-Bump.
+ *
+ * Etwas breiter als der Melde-Dialog, weil vier Erklärzeilen darin stehen; bei
+ * 92vw bleibt es auf dem Handy trotzdem im Bild. */
+.bewert-dlg {
+  border: 1px solid var(--line); border-radius: 16px;
+  background: var(--bg2); color: var(--text);
+  padding: 20px; width: min(92vw, 540px);
+}
+.bewert-dlg::backdrop { background: rgba(0, 0, 0, .55); }
+.bewert-dlg h3 { margin: 0 0 6px; font-size: 1.05rem; }
+.bewert-form { display: flex; flex-direction: column; gap: 10px; }
+.bewert-liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.bewert-zeile { display: flex; gap: 10px; align-items: flex-start; font-size: .86rem; line-height: 1.4; }
+/* Die Zahl in fester Breite, damit die vier Erklärungen bündig stehen und die
+   Spalte beim Lesen nicht wandert. Mono, weil Ziffern dort gleich breit sind. */
+.bewert-wert {
+  flex: 0 0 2.6rem; text-align: center;
+  font-family: var(--mono); font-size: .95rem; font-weight: 700;
+  padding: 3px 0; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--bg);
+}
+/* Dieselben drei Stufen wie an der Karte — eine fremde Messung wird nicht
+   zweimal verschieden beschriftet. Gefärbt ist nur der Rand; die Ziffer steht
+   auf `var(--text)`, damit der Kontrast in allen drei Themen gilt. */
+.bewert-wert.gut     { border-color: color-mix(in srgb, var(--ok) 60%, transparent); }
+.bewert-wert.mittel  { border-color: color-mix(in srgb, var(--warn) 60%, transparent); }
+.bewert-wert.schwach { border-color: color-mix(in srgb, #ff7b7b 60%, transparent); }
+html[data-thema="tag"] .bewert-wert.schwach { border-color: color-mix(in srgb, #b3261e 60%, transparent); }
+/* Die Grenze der Aussage — abgesetzt, damit sie nicht als Kleingedrucktes
+   untergeht. Sie ist der ehrlichste Satz im ganzen Fenster. */
+.bewert-grenze {
+  margin: 0; padding: 8px 10px;
+  border-left: 3px solid var(--accent);
+  background: var(--bg);
+  border-radius: 0 8px 8px 0;
+}
+.bewert-stand { margin: 0; }
+/* Welche Adresse gemessen wurde, wenn ein Schaufenster davorsteht. Die Adressen
+   stehen in Mono und dürfen umbrechen — eine lange Adresse, die den Dialog
+   breiter macht, wäre auf dem Handy der nächste Fehler. */
+.bewert-adresse { margin: 6px 0 0; }
+.bewert-adresse code {
+  font-family: var(--mono); font-size: .92em;
+  overflow-wrap: anywhere; word-break: break-word;
+}
+.bewert-selbst { margin: 2px 0 0; }
+.bewert-knoepfe { display: flex; gap: 8px; justify-content: flex-end; }
+.bewert-eig { margin: 0; }
+.bewert-eig h4 { margin: 0 0 6px; font-size: .92rem; }
+.bewert-eig ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.bewert-eig li { font-size: .84rem; line-height: 1.45; padding-left: 12px; border-left: 2px solid var(--line); }
+
+/* ------------------------------------------- Geprüfte Eigenschaften (Karte)
+ * Statt Sterne (Klaus 2026-08-12). Es sind Tatsachen, keine Meinungen —
+ * deshalb sehen sie NICHT wie eine Auszeichnung aus: keine Farbe, kein Rahmen,
+ * kein Gold. Ein Häkchen soll gelesen, nicht bestaunt werden.
+ *
+ * Nur erfüllte Eigenschaften erscheinen. Es gibt also keinen roten Zustand,
+ * für den eine Farbe nötig wäre — und damit auch keine Kontrast-Rechnung über
+ * drei Themen für etwas, das es nicht gibt. */
+.eigenschaften {
+  margin: 0; display: inline-flex; flex-wrap: wrap; gap: 3px 9px;
+  font-size: .7rem; line-height: 1.25; color: var(--muted);
+}
+.eig { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.eig span[aria-hidden] { font-family: var(--mono); color: var(--accent2); }
+
+/* ------------------------------------------------------------------- Fuß */
+footer {
+  border-top: 1px solid var(--line); margin-top: 26px;
+  padding: 24px 0 36px; color: var(--muted); font-size: .9rem;
+}
+footer a { color: var(--muted); }
+footer p { margin: 0 0 8px; }
+.fuss-links { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+/* ---------------------------------------------------------------- Rücksicht
+ * Bewegung abschaltbar (Bauregel Layout 3.5). Die Neigung der Knöpfe wird ganz
+ * zurückgenommen; der Schimmer bleibt, weil er nicht animiert ist. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .listing, nav.top a, .thema-knopf, .relais-pille, .fund-bild, .fund-karte { transition: none; }
+  .btn, .thema-knopf, .relais-pille, nav.top a, .fund-bild { transform: none; }
+  .listing { transform: translateY(var(--lift, 0px)); }
+}
+
+/* ------------------------------------------------------------------ Studio
+ * Nur für den Betreiber. Öffentlich ist hier nichts sichtbar: das Panel wird
+ * erst nach einem LANGEN Druck auf die Fußzeile gebaut und eingehängt.
+ *
+ * Es liegt als Schicht ÜBER der Seite, nicht darin — sonst müsste der
+ * Seitenaufbau Platz für etwas lassen, das fast nie da ist, und genau solche
+ * Reserven waren hier schon der Fehler. */
+.studio-panel {
+  position: fixed; z-index: 60; inset: auto 0 0 0;
+  max-height: 86vh; overflow-y: auto;
+  padding: 18px 16px 26px;
+  background: var(--bg2); border-top: 1px solid var(--line);
+  box-shadow: 0 -18px 50px rgba(0, 0, 0, .55);
+  transform: translateY(101%); transition: transform .24s ease;
+}
+.studio-panel.offen { transform: none; }
+@media (min-width: 900px) {
+  .studio-panel { inset: 0 0 0 auto; width: min(560px, 92vw); max-height: none;
+                  border-top: 0; border-left: 1px solid var(--line);
+                  transform: translateX(101%); }
+}
+.studio-kopf { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.studio-kopf h2 { margin: 0; }
+.studio-intro { margin: 6px 0 18px; }
+.studio-block {
+  border-top: 1px solid var(--line); padding-top: 16px; margin-top: 18px;
+}
+.studio-block h3 { margin: 0 0 10px; }
+.studio-zahl { font-family: var(--mono); font-size: .78rem; color: var(--accent); font-weight: 400; }
+.studio-knoepfe { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.studio-liste { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+/* KNOEPFE IN EIGENER ZEILE (Klaus 2026-08-10: „es ist noch rechts gerutscht").
+ *
+ * Vorher standen Bild, Text und die drei Knoepfe nebeneinander, und `.studio-tun`
+ * durfte nicht schrumpfen. Bei 560 px Panel-Breite nahmen die Knoepfe rund 330 px
+ * — fuer den Text blieben gut hundert, und der Name brach in drei Zeilen um.
+ * Es sah aus wie ein verrutschtes Layout und war eine simple Platz-Rechnung.
+ *
+ * Das Panel wird nie breit (hoechstens 560 px). Also bekommen die Knoepfe IMMER
+ * ihre eigene Zeile, statt sie sich mit dem Text zu teilen. Vorhersagbar in
+ * jeder Breite, und der Text hat, was er braucht. */
+.studio-zeile {
+  display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap;
+  padding: 10px; border: 1px solid var(--line); border-radius: 12px;
+}
+.studio-vorschlag { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+/* Das Grund-Feld beim Sperren. Es nimmt die volle Breite der Zeile ein, damit
+   der Text lesbar bleibt, den nachher jeder Besucher an der Karte sieht. */
+.studio-sperrform {
+  flex-basis: 100%; margin-top: 8px; padding: 10px; border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--warn) 45%, var(--line)); background: var(--bg2);
+}
+.studio-sperrform .hinweis { margin-top: 8px; }
+.studio-bild {
+  width: 44px; height: 44px; flex-shrink: 0; border-radius: 10px; overflow: hidden;
+  background: var(--bg); border: 1px solid var(--line);
+}
+.studio-bild img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.studio-text { flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.studio-text .klein { color: var(--muted); }
+.studio-warn { color: var(--warn, #e0b341); }
+.studio-tun { flex: 1 0 100%; display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+.studio-fuss {
+  position: sticky; bottom: 0; margin-top: 22px; padding-top: 14px;
+  border-top: 1px solid var(--line); background: var(--bg2);
+}
+.studio-fuss .hinweis { margin-top: 8px; }
+
+/* Die Meldung. Kurz sichtbar, dann weg — sie schiebt nichts, weil sie über
+   allem schwebt statt im Fluss zu stehen. */
+.studio-meldung {
+  position: fixed; z-index: 70; left: 50%; bottom: 26px; transform: translateX(-50%);
+  max-width: min(520px, 92vw); padding: 11px 16px; border-radius: 12px;
+  background: var(--bg2); border: 1px solid var(--accent); color: var(--text);
+  font-size: .9rem; box-shadow: var(--shadow), var(--glow);
+  transition: opacity .3s, transform .3s;
+}
+.studio-meldung.schlecht { border-color: var(--warn, #e0b341); box-shadow: var(--shadow); }
+.studio-meldung.weg { opacity: 0; transform: translateX(-50%) translateY(10px); }
+/* Die Herkunft an der Karte. Sie steht neben dem Namen, nicht kleingedruckt am
+   Rand: sie ist das, wonach die Entscheidung faellt. */
+.studio-her {
+  display: inline-block; font-family: var(--mono); font-size: .66rem;
+  padding: 2px 8px; border-radius: 999px; vertical-align: middle;
+  /* Nicht mitten im Wort umbrechen: „ohne Herkunfts-Angabe" stand sonst
+     dreizeilig in einer schmalen Spalte und sah aus wie ein Fehler. */
+  white-space: nowrap;
+  border: 1px solid var(--line); color: var(--muted);
+}
+.studio-her.ist-hier { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+.studio-zeile.ist-fremd { border-style: dashed; }
+.studio-zeile .schalter { margin-top: 6px; }
+
+/* ── Meldungen (2026-08-10) ────────────────────────────────────────────────
+   Eine Meldung ist keine Einreichung: sie hat kein Bild und keine Adresse,
+   und sie betrifft etwas, das BEREITS oeffentlich steht. Darum eine eigene
+   Zeile ohne Bild-Spalte — sonst klaffte links ein leeres Quadrat, das wie
+   ein fehlgeschlagener Bild-Abruf aussieht. */
+.studio-meldung-zeile { border-left: 3px solid var(--line); }
+/* „Rechtswidriger oder gefaehrlicher Inhalt" ist der eine Grund, bei dem
+   Zoegern teuer wird. Er faerbt die Zeile — nicht als Schmuck, sondern damit
+   er im Stapel nicht untergeht. Farbe ist dabei NIE das einzige Merkmal:
+   daneben steht das Wort „rechtswidrig?" ausgeschrieben. */
+.studio-meldung-zeile.ist-ernst { border-left-color: var(--warn, #e0b341); }
+.studio-her.ist-ernst { color: var(--warn, #e0b341); border-color: color-mix(in srgb, var(--warn, #e0b341) 45%, transparent); }
+/* Kopf einer Meldungs-Gruppe (Rauswurf-Regel, Klaus 2026-08-11).
+   Vier Beschwerden zu EINER App sind etwas anderes als vier zu vier Apps —
+   als lose Zeilen sehen beide gleich aus. Der Kopf macht den Unterschied
+   sichtbar, bevor jemand zaehlen muss. */
+.studio-mkopf { margin: 10px 0 2px; padding: 0 2px; display: flex;
+                flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+.studio-mkopf .studio-warn { flex-basis: 100%; }
+/* Ab der Schwelle wird der Kopf abgesetzt — aber NICHT rot. Rot ist in
+   diesem Studio die Farbe der Sperre, und der Pruefstapel ist keine. */
+.studio-mkopf.ist-stapel { border-left: 3px solid var(--warn, #e0b341);
+                           padding-left: 8px; }
+.studio-grund { color: var(--text); }
+/* Der Wortlaut des Melders, als Zitat abgesetzt. Zeilenumbrueche bleiben
+   erhalten — wer drei Sachen aufzaehlt, soll drei Zeilen bekommen. */
+.studio-hinweis-melder {
+  border-left: 2px solid var(--line); padding-left: 8px;
+  white-space: pre-wrap; color: var(--muted);
+}
+
+/* Die Naehe-Zahl der Bedeutungs-Suche. Bewusst NEBEN den Messwerten, nicht
+   zwischen ihnen: die Messwerte gelten immer, die Naehe nur fuer diese eine
+   Frage. */
+.listing .naehe { margin: 0 0 8px; }
+.naehe-wert { border-color: color-mix(in srgb, var(--accent3) 55%, transparent); }
+.naehe-wert b { color: var(--accent3); }
+
+/* Messwert neben der Beschwerde (Rauswurf-Regel Schritt 2, 2026-08-11).
+   Bisher stand die Meldung im Studio und die Zahl auf der Karte drueben —
+   wer beurteilen wollte, ob an einer Beschwerde etwas dran ist, musste
+   beides im Kopf zusammensuchen. */
+.studio-mwert { font-variant-numeric: tabular-nums; opacity: 0.85; }
+/* Gelb heisst LANGSAM, nicht gesperrt. Darum dieselbe Warnfarbe wie beim
+   rechtswidrig-Hinweis, aber ohne die Randmarkierung der Sperre — und das
+   Wort „gelb" steht ausgeschrieben daneben, Farbe ist nie das einzige
+   Merkmal (Bauregel Barrierefreiheit). */
+.studio-mwert.ist-gelb { color: var(--warn, #e0b341); opacity: 1; }
+
+/* Der wartende Sichttest — nur an Einträgen, die der Betreiber noch nicht
+   selbst im Browser hatte. Bewusst zurückhaltend: es ist ein Hinweis, keine
+   Warnung. Ein rotes Band stünde für einen Mangel; hier fehlt aber nichts an
+   der App, sondern ein Blick des Betreibers. */
+.sicht-offen {
+  color: var(--warn);
+  border: 1px solid var(--warn);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: .78em;
+  white-space: nowrap;
+}
+
+/* ══ DIE APP-SEITEN UNTER apps/ (2026-09-21) ═══════════════════════════════
+ * Eine Seite je Eintrag, damit jede App eine eigene Adresse hat, die gefunden
+ * werden kann. Sie benutzt die vorhandene Formensprache — `.glass` mit seinem
+ * Leuchtrand, `.mw` für die Messwerte, `.btn` für die Knöpfe. Neu ist hier
+ * ausschliesslich die TABELLE: `grep -c table` über diese Datei ergab am
+ * 2026-09-21 genau NULL, es gab keine einzige Tabellen-Regel.
+ *
+ * ⚠ SIE IST DIE VORLAGE FÜR ALLE WEITEREN APP-SEITEN. Wer sie ändert, ändert
+ * 29 Seiten auf einmal — das ist der Grund, warum sie hier steht und nicht als
+ * <style> in der Vorlage: eine zweite Fassung in einer erzeugten Datei liefe
+ * auseinander, und niemand sähe es.
+ *
+ * Farben ausschliesslich über die Variablen. Kontrast gilt PRO THEMA, und alle
+ * drei stehen auf Barrierefreiheit 100 — ein fester Farbwert hier bräche das in
+ * genau einem der drei, und zwar unbemerkt. ------------------------------- */
+/* Die Abschnitte tragen `.glass` aus dem Markup — Leuchtrand, Schatten und
+   Radius kommen von dort. Hier steht NUR, was `.glass` nicht weiss: wie viel
+   Luft ein Textabschnitt braucht. */
+.app-kopf, .app-abschnitt { padding: 16px 18px; }
+.app-kopf { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.app-kopf .app-bild { width: 72px; height: 72px; flex-shrink: 0; border-radius: 16px;
+  overflow: hidden; background: var(--bg2); border: 1px solid var(--line); }
+.app-kopf .app-bild img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.app-kopf .app-titel { min-width: 0; flex: 1 1 260px; }
+.app-kopf h1 { margin: 0 0 6px; }
+.app-fakten { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center;
+  margin: 0; color: var(--muted); font-size: .84rem; }
+
+.app-abschnitt { margin: 16px 0 0; }
+.app-abschnitt h2 { margin: 0 0 10px; }
+
+/* Die Messwert-Pillen stehen auf der Detailseite NEBENEINANDER statt im
+   2×2-Raster der Karte: hier ist die volle Breite da, und vier Pillen in einer
+   Reihe lesen sich als eine Zeile Zahlen. Unter 560px bricht es von selbst um. */
+.app-mess .messwerte { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+
+/* ⚠ DIE HÜLLE IST KEIN SCHMUCK. Fünf Spalten auf einem 360px-Schirm quetschen
+   die Zahlen zweizeilig — dieselbe Falle wie `1fr` an der Karte (Skill
+   app-container-kompakt, Falle 1), nur an einer Tabelle. Sie scrollt lieber,
+   als zu quetschen. */
+.mess-huelle { overflow-x: auto; -webkit-overflow-scrolling: touch;
+  border-radius: 12px; border: 1px solid var(--line); }
+.mess-tabelle { width: 100%; border-collapse: collapse; font-size: .86rem; }
+.mess-tabelle caption { text-align: left; padding: 10px 12px 8px;
+  color: var(--muted); font-size: .8rem; }
+.mess-tabelle th { text-align: left; font-weight: 600; color: var(--muted);
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .04em;
+  border-bottom: 1px solid var(--line); padding: 7px 12px; white-space: nowrap; }
+.mess-tabelle td { padding: 7px 12px; border-bottom: 1px solid var(--line); }
+.mess-tabelle tbody tr:last-child td { border-bottom: 0; }
+.mess-tabelle .zeit { font-family: var(--mono); font-size: .78rem; white-space: nowrap; }
+.mess-tabelle .zahl { font-family: var(--mono); text-align: right; }
+.mess-tabelle .gut { color: var(--ok); }
+.mess-tabelle .mittel { color: var(--accent); }
+.mess-tabelle .schwach { color: #ff7b7b; }
+html[data-thema="tag"] .mess-tabelle .schwach { color: #b3261e; }
+
+/* ⚠ HIER STAND `min-width: 420px` AN `.mess-tabelle` UND ERZWANG DEN QUERLAUF
+   SELBST. Gemessen am 2026-09-21 auf 390px: 633px Tabelle in 310px Huelle,
+   zwei von vier Spalten unsichtbar — und nichts zeigte an, dass man wischen
+   kann. Eine Tabelle, die abgeschnitten aussieht, sieht kaputt aus.
+
+   ⚠ UND DER ERSTE ANLAUF DER ABHILFE STAND VOR `\.mess-tabelle th`, also
+   VERLOR er: gleiche Spezifitaet, fruehere Stelle. Gemessen blieb
+   `white-space: nowrap` an allen fuenf Koepfen stehen und die Tabelle bei
+   633px. Wer eine CSS-Regel ergaenzt, sieht nach, was sie sonst noch trifft —
+   und WO sie steht. */
+@media (max-width: 620px) {
+  /* ⚠ `overflow-wrap` GREIFT IN EINER TABELLE NUR MIT FESTEM RASTER. Gemessen
+     am 2026-09-21: bei `table-layout: auto` gibt die Tabelle der Spalte lieber
+     mehr Platz, statt das Wort zu brechen — die Koepfe blieben einzeilig und
+     die Tabelle bei 412px in einer 310px-Huelle. Mit `fixed` bricht `break-word`
+     sanft (nur wo noetig) statt mitten in „Leistung", wie `anywhere` es tat. */
+  .mess-tabelle { font-size: .78rem; table-layout: fixed; }
+  .mess-tabelle th, .mess-tabelle td { padding: 6px 4px; }
+  .mess-tabelle th:first-child, .mess-tabelle td:first-child { width: 31%; }
+  /* ⚠ `hyphens: auto` REICHT NICHT — es braucht Silbentrennungs-Woerterbuecher,
+     die im Browser nicht ueberall da sind. Gemessen: „Bedienbarkeit" 106px und
+     „Auffindbarkeit" 114px standen weiter in EINER Zeile, und die Tabelle blieb
+     412px breit. `overflow-wrap: anywhere` bricht auch ein einzelnes langes
+     Wort — haesslicher, aber es passt. */
+  .mess-tabelle th { white-space: normal; overflow-wrap: break-word; hyphens: auto; }
+  .mess-tabelle .zeit { font-size: .7rem; white-space: normal; }
+}
+
+.app-mangel { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.app-mangel li { padding-left: 18px; position: relative; color: var(--muted);
+  font-size: .9rem; }
+.app-mangel li::before { content: "·"; position: absolute; left: 6px;
+  color: var(--accent); font-weight: 700; }
+
+/* ── Das Suchfeld der Uebersicht (Klaus 2026-09-21) ────────────────────────
+ * Ein echtes Formular: ohne JavaScript traegt Enter die Eingabe in den
+ * Marktplatz, mit JavaScript filtert `app-suche.js` an Ort und Stelle.
+ * ⚠ KEIN NEUER FARBWERT — der Kontrast gilt PRO THEMA, und alle drei stehen
+ * heute auf Barrierefreiheit 100. */
+.app-suche { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 6px; }
+.app-suche input {
+  flex: 1 1 220px; min-width: 0; padding: 10px 12px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--bg2); color: var(--text);
+  font: inherit; font-size: .95rem;
+}
+.app-suche input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* Die Trefferzeile haelt ihre Hoehe frei, auch solange sie leer ist — sonst
+   springt die Liste bei der ersten getippten Taste um eine Zeile nach unten.
+   Genau dieser Sprung hat auf dieser Seite schon einmal CLS gekostet. */
+.app-treffer { min-height: 1.4em; margin: 0 0 14px; color: var(--muted); font-size: .86rem; }
+/* Nur fuer Vorlese-Programme. Die Beschriftung MUSS es geben (ein Feld ohne
+   Label ist fuer einen Screenreader namenlos), auf dem Schirm sagt der
+   Platzhalter dasselbe. */
+.nur-vorlesen {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.app-nachbarn { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.app-nachbarn a { display: block; padding: 10px 12px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--bg2); text-decoration: none; }
+.app-nachbarn a:hover { border-color: var(--accent); }
+/* ⚠ DIE ZAHL NEBEN EINEM BEREICH IST EINE ANGABE, KEIN ABZEICHEN — Mono und
+   gedämpft wie jede andere Zahl auf diesen Seiten. Ein buntes Pill sähe aus
+   wie eine Bewertung, und Bewertungen gibt es hier (noch) nicht. */
+.app-zahl { font-family: var(--mono); font-size: .72rem; font-weight: 400;
+  color: var(--muted); margin-left: .4em; }
+.app-nachbarn .n-name { display: block; color: var(--text); font-weight: 600; }
+.app-nachbarn .n-text { display: block; color: var(--muted); font-size: .84rem;
+  margin-top: 2px; }
+
+/* ── Der Messverlauf klappt auf (Klaus 2026-09-21) ───────────────────────────
+   Ein <details>, kein eigener Klick-Ablauf: der Browser bringt
+   Tastatur-Bedienung und Vorlese-Ansage mit, und es funktioniert OHNE
+   JavaScript. Dasselbe Bauteil wie an den Karten der Startseite. */
+.mess-auf > summary { cursor: pointer; list-style: none; display: block;
+  padding: 2px 0; border-radius: 8px; }
+.mess-auf > summary::-webkit-details-marker { display: none; }
+.mess-auf > summary h2 { display: inline; }
+/* Das Dreieck selbst gebaut, damit es die Farbe des Hauses trägt und sich
+   beim Aufklappen dreht. `inline-block`, sonst dreht sich nichts. */
+.mess-auf > summary h2::before { content: "▸"; color: var(--accent);
+  display: inline-block; margin-right: 8px; transition: transform .18s ease; }
+.mess-auf[open] > summary h2::before { transform: rotate(90deg); }
+.mess-auf > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* Die Zahl daneben sagt, WIE VIEL sich dahinter verbirgt — ohne sie ist ein
+   zugeklappter Abschnitt eine Tür ohne Schild. */
+.mess-zahl { font-family: var(--mono); font-size: .7rem; color: var(--muted);
+  border: 1px solid var(--line); background: var(--bg2);
+  border-radius: 999px; padding: 1px 8px; margin-left: 8px; vertical-align: middle; }
+.mess-auf > .mess-huelle { margin-top: 12px; }

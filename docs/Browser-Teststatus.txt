@@ -1,0 +1,2 @@
+UNGEPRÜFT: Chromium nicht verfügbar. Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-linux64/chrome-headless-shell
+Einrichten: npm install && npx playwright-core install chromium. Alternativ CHROMIUM_PATH setzen.

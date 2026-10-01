@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="de" data-thema="tag">
+<head>
+<script>/* PT-SPRACHRIEGEL — Begründung in assets/sprache.js § Sprachriegel. MUSS inline und VOR dem ersten Anstrich laufen: danach hat Chrome längst entschieden. */(function(){try{if(localStorage.getItem("apgpt_lang_wahl")!=="1")return;var h=document.documentElement;h.lang=localStorage.getItem("apgpt_lang")==="en"?"en":"de";h.setAttribute("translate","no");h.classList.add("notranslate");var m=document.createElement("meta");m.name="google";m.content="notranslate";(document.head||h).appendChild(m);}catch(e){}})();</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png?v=101">
+<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png?v=101">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=101">
+<title>Datenschutz — Auslieferungsprüfer</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="assets/style.css?v=101">
+<script>
+/* Thema VOR dem ersten Anstrich setzen — sonst blitzt bei jedem Aufruf kurz
+   das Standard-Thema auf, bevor die gespeicherte Wahl greift. Absichtlich
+   winzig und inline: eine eigene Datei wäre hier ein Netzweg auf dem
+   kritischen Pfad, für vier Zeilen. */
+try { var _t = localStorage.getItem("apgpt_thema");
+      if (_t === "nacht" || _t === "signal" || _t === "tag") document.documentElement.setAttribute("data-thema", _t); }
+catch (e) {}
+</script>
+<link rel="stylesheet" href="assets/design-gpt.css?v=101">
+</head>
+<body>
+<header><div class="wrap bar">
+  <a class="brand" href="auslieferungspruefer.html"><span class="mark" aria-hidden="true"></span><span class="gpt-brand-label">Auslieferungsprüfer <span class="gpt-badge">GPT</span></span></a>
+  <nav class="top">
+      <button class="thema-knopf" id="frischKnopf" type="button"
+              title="Aktualisieren — Vorrat wegwerfen und wirklich neu laden"
+              aria-label="Aktualisieren — Vorrat wegwerfen und wirklich neu laden">
+        <span aria-hidden="true">⟳</span><span data-i18n="btn_frisch">Aktualisieren</span>
+      </button>
+      <button class="thema-knopf" id="sprachKnopf" type="button"
+              title="Sprache / Language" aria-pressed="false"
+              aria-label="Sprache umschalten, Deutsch oder Englisch. Langer Druck: Browser-Übersetzer wieder zulassen">
+        <span aria-hidden="true">🌐</span><span>DE&nbsp;/&nbsp;EN</span>
+      </button>
+      <button class="thema-knopf" id="themaKnopf" type="button">
+        <span class="thema-zeichen" aria-hidden="true">◐</span><span class="thema-name">Nacht</span>
+      </button>
+      <a href="auslieferungspruefer.html" data-i18n="nav_zur_app">&larr; Auslieferungsprüfer</a>
+    </nav>
+</div></header>
+
+<main class="wrap"><p class="gpt-eyebrow">Auslieferungsprüfer GPT · eigenständige Fassung</p>
+  <section>
+    <h1 data-i18n="recht_h1_datenschutz">Datenschutz</h1>
+    <!-- ⚠ DIESE SEITE WIRD NICHT ÜBERSETZT, UND DAS IST EINE ENTSCHEIDUNG.
+         Ein Rechtstext, den wir selbst ins Englische bringen, wäre eine ZWEITE
+         Fassung — und die sähe verbindlich aus, ohne es zu sein. Verbindlich
+         ist die deutsche. Der Sprachriegel sperrt aber den Browser-Übersetzer,
+         sobald jemand eine Sprache gewählt hat; ohne diesen Satz stünde ein
+         englischer Leser vor einer deutschen Seite, die er nicht einmal mehr
+         maschinell lesen kann. Also steht hier, wie er den Riegel löst — der
+         Weg ist gebaut (langer Druck auf den Sprachknopf). -->
+    <p class="hinweis" data-i18n="recht_nur_deutsch">Rechtstext auf Deutsch. Diese Seite wird bewusst nicht übersetzt — verbindlich ist die deutsche Fassung.</p>
+
+    <div class="glass note-box">
+      <p><strong>Dieser Text beschreibt, was diese Seite <em>tatsächlich</em>
+      tut.</strong></p>
+      <p class="sub">Er ist keine Vorlage von der Stange, sondern am Code
+      geprüft. Wo etwas an einen Dritten geht, steht dessen Name dabei.</p>
+    </div>
+
+    <h2>Verantwortlich</h2>
+    <p>Klaus Nitzsche, Märchenweg 14, 21077 Hamburg, Deutschland —
+    <a href="mailto:info@family-projekt.de">info@family-projekt.de</a>.
+    Vollständige Angaben im <a href="impressum.html">Impressum</a>.</p>
+
+    <h2>Was diese Seite nicht tut</h2>
+    <p>Keine Werbe-Netzwerke. Keine Zählpixel. Keine Einbindung fremder
+    Schriftarten oder Skripte. Es gibt nichts, wofür eine Einwilligung
+    einzuholen wäre — deshalb fragt die Seite auch nicht danach.</p>
+
+    <h2>Was beim Aufruf anfällt</h2>
+    <p>Die Seite wird von GitHub Pages ausgeliefert. Dabei verarbeitet GitHub
+    technisch notwendige Verbindungsdaten (unter anderem die IP-Adresse), um die
+    Seite überhaupt senden zu können. Darauf hat der Betreiber dieser Seite
+    keinen Einfluss.<br>
+    Anbieter: GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA
+    94107, USA.</p>
+
+    <h2>Was auf deinem Gerät bleibt</h2>
+    <p>Wird die Bedeutungs-Suche eingeschaltet, lädt der Browser
+    <strong>einmalig</strong> ein Sprachmodell und behält es lokal. Die Suche
+    läuft danach vollständig auf deinem Gerät —
+    <strong>deine Suchanfragen verlassen es nicht</strong>.</p>
+    <p>Ehrlich dazu: dieser eine Download kommt von einem externen Anbieter
+    (Hugging Face). Wie bei jedem Datei-Abruf im Netz wird dabei deine
+    IP-Adresse an diesen Anbieter übermittelt. Es passiert nur, wenn du die
+    Bedeutungs-Suche ausdrücklich einschaltest — die Wort-Suche braucht es nicht.</p>
+
+    <h2>Die Formulare</h2>
+    <p>Diese Seite hat drei Wege, auf denen du selbst etwas absendest: das
+    <strong>Interesse-Formular</strong>, das <strong>Einreich-Formular</strong>
+    (eigene App eintragen) und den <strong>Melde-Knopf</strong> an jedem Eintrag.
+    Alle drei senden erst, wenn du den Knopf drückst, und übertragen
+    ausschließlich das, was du selbst eingetragen hast.</p>
+    <p><strong>Wohin es geht.</strong> Die Übermittlung läuft über ein eigenes
+    Skript auf Klaus Nitzsches eigenem Webhosting bei der Hetzner Online GmbH in
+    Deutschland. Dort werden die Angaben in einer Warteschlangen-Datei
+    gespeichert und per E-Mail an
+    <a href="mailto:info@family-projekt.de">info@family-projekt.de</a> zugestellt.
+    Es findet keine Weitergabe an Dritte und keine automatisierte Entscheidung
+    statt.</p>
+    <p><strong>Der Melde-Knopf verlangt bewusst keine E-Mail-Adresse.</strong>
+    Wer etwas Bedenkliches sieht, soll melden können, ohne sich auszuweisen —
+    sonst meldet niemand. Übertragen werden nur der gemeldete Eintrag, der
+    gewählte Grund und dein freiwilliger Hinweistext.</p>
+    <p><strong>Spam-Schutz.</strong> Zur Abwehr automatisierter Einsendungen
+    wird zusätzlich ein <strong>gekürzter, nicht rückrechenbarer Kennwert deiner
+    IP-Adresse</strong> gespeichert (Hash mit zufälligem Zusatz). Keine Klar-IP.</p>
+    <p><strong>Aufbewahrung.</strong> Einträge werden nur so lange gespeichert,
+    wie es für Prüfung, Veröffentlichung oder Beantwortung erforderlich ist, und
+    danach gelöscht. Bei einer freigegebenen App-Einreichung erscheinen im
+    Marktplatz nur Link, Beschreibung und Bild — <strong>die Kontakt-E-Mail wird
+    nicht veröffentlicht</strong>.</p>
+    <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. b bzw. lit. f DSGVO.</p>
+
+    <h2>Die Netzwerk-Funktion</h2>
+    <p>Diese Seite kann sich mit dem SBKIM-Knotennetz verbinden. Das geschieht
+    <strong>nur auf deine ausdrückliche Aktion</strong> — ohne sie wird keine
+    Verbindung aufgebaut.</p>
+    <p>An erster Stelle steht ein Relais des Betreibers
+    (<code>relay.pwa-toolpoint.de</code>, betrieben bei der Hetzner Online GmbH
+    in Deutschland). Dahinter stehen <strong>öffentliche, fremde
+    Relais-Server</strong> (unter anderem <code>relay.damus.io</code>,
+    <code>nos.lol</code>, <code>relay.primal.net</code>). Sie werden nicht vom
+    Betreiber dieser Seite kontrolliert und stehen teils außerhalb der EU.</p>
+    <p><strong>Alle gewählten laufen parallel</strong>, damit die Verbindung
+    nicht an einem einzelnen Server hängt. Solange fremde Relais dabei sind —
+    und in der Voreinstellung sind sie es — wird deine IP-Adresse auch an deren
+    Betreiber übermittelt. Welche Relais benutzt werden, kannst du auf der
+    Knotenkarte selbst wählen.</p>
+    <p>Übertragen werden nur die für die Verbindung nötigen technischen Daten
+    und die Visitenkarte, die du selbst veröffentlichst. Ein Relais sieht keine
+    Inhalte — aber es sieht, <strong>dass</strong> zwei Knoten sich treffen
+    wollen.</p>
+
+    <h2>Externe Inhalte und Links</h2>
+    <p>Die gelisteten Apps und ihre Vorschau-Bilder liegen bei den jeweiligen
+    Anbietern und werden direkt von deren Servern geladen. Beim Anzeigen der
+    Bilder erfährt der jeweilige Anbieter dadurch deine IP-Adresse. Ein
+    <strong>Kaffeekassen-Knopf</strong> an eigenen Einträgen führt zu PayPal —
+    erst wenn du ihn anklickst, und dort gelten die Bedingungen von PayPal.</p>
+
+    <h2>Deine Rechte</h2>
+    <p>Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und
+    Widerspruch nach Art. 15 bis 21 DSGVO. Dazu genügt eine formlose Nachricht an
+    <a href="mailto:info@family-projekt.de">info@family-projekt.de</a>. Außerdem
+    steht dir ein Beschwerderecht bei einer Aufsichtsbehörde zu. Was lokal auf
+    deinem Gerät liegt, löschst du über die Funktionen deines Browsers.</p>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <div class="fuss-links">
+    <a class="btn slim ghost" href="auslieferungspruefer.html" data-i18n="nav_app"><span class="gpt-brand-label">Auslieferungsprüfer <span class="gpt-badge">GPT</span></span></a>
+    <a class="btn slim ghost" href="impressum.html" data-i18n="fuss_impressum">Impressum</a>
+    <a class="btn slim ghost" href="datenschutz.html" data-i18n="fuss_datenschutz">Datenschutz</a>
+  </div>
+  <p class="klein" style="margin-top:14px">&copy; 2026 Auslieferungsprüfer</p>
+</div></footer>
+<script src="assets/i18n-recht.js?v=101"></script>
+<script src="assets/sprache.js?v=101"></script>
+<script src="assets/thema.js?v=101"></script>
+</body>
+</html>
