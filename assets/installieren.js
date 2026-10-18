@@ -76,6 +76,7 @@
     var k = document.getElementById("installieren");
     if (!k) return;
     var app = alsApp();
+    k.hidden = app; k.style.display = app ? "none" : "";   /* als App: weg, nicht „✓ App“ (Klaus 2026-10-18) */
     k.dataset.lage = app ? "app" : (ereignis ? "angeboten" : "nicht-angeboten");
     k.querySelector("[data-z]").textContent = app ? "✓" : "⬇";
     k.querySelector(".t").textContent = app ? " App" : T(" Installieren", " Install");
@@ -123,7 +124,12 @@
 
   function einhaengen() {
     if (document.getElementById("installieren")) return;
-    var vor = document.getElementById("frischKnopf");
+    /* Startseite (Klaus 2026-10-18: „oben in die Navi-Leiste“): dort gibt es kein ⟳ — dann vor den Themen-Knopf. */
+    var vor = document.getElementById("frischKnopf") || document.getElementById("themaKnopf");
+    if (vor && vor.id === "themaKnopf") { var st = document.createElement("style");
+      st.textContent = "@media (max-width:760px){#installieren .t{display:none}}" +
+        "@media (max-width:420px){header .bar{column-gap:10px}header .bar .thema-knopf,header .bar .btn{padding-left:9px;padding-right:9px}}";
+      document.head.appendChild(st); }
     if (!vor || !vor.parentNode) return;
     var k = document.createElement("button");
     k.type = "button"; k.className = "thema-knopf"; k.id = "installieren";

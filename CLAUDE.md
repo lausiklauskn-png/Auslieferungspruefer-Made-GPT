@@ -560,3 +560,15 @@ installieren. Cache `ap-gpt-v1.0.1`, alle `?v=102`; Prüfsummen in `docs/Dateipr
 ## 🌓 Installieren-Meldung bleibt lesbar (2026-10-18)
 
 Klaus' Handy zeigte das Erklärfenster des Installieren-Knopfs hell auf weiß: `#install-meldung` setzte `background:var(--flaeche,#fff);color:inherit` — die Seite hat kein `--flaeche`, also weißer Grund, die Schrift erbt das helle Thema. Nachgemessen im Browser (headless, 380 px, Knopf getippt): Nacht 1,14 · Signal 1,00 · Tag 15,65. Jetzt misst `lesbar(m)` nach dem Einhängen den Kontrast (Logik wie Sage-Protokol #1152, von Hand eingebaut — die Datei bleibt die eigene Fassung); unter 4,5 steht die Meldung fest #1a1a1a auf #fff, Marke `data-lesbar="fest"|"seite"`. Danach: Nacht/Signal 17,40 (fest) · Tag 15,65 (seite). Cache v1.0.2, alle `?v=103`. ⚠ Am Tablet nicht gemessen.
+
+## ⬇ Installieren: als App weg, und oben auf der Startseite (Klaus 2026-10-18)
+
+Klaus: *„setze den Installationsbutton oben in die Navi-Leiste zusätzlich. Da soll er aber verschwinden, wenn die App
+installiert ist … Macht das bitte überall so.“* Gemessen auf main: in der App stand der Knopf schon auf jeder Breite oben,
+aber **als installierte App zeigte er „✓ App“** statt zu verschwinden (die Original-App blendet ihn aus). Jetzt
+`k.hidden`/`display:none` als App. Die **Startseite** hatte keinen Knopf: jetzt vor dem Themen-Knopf, bis 760 px nur ⬇,
+bis 420 px schmalere Abstände — Kopfleiste 132 px wie vorher (bei 300 px sogar eine Zeile weniger). Cache v1.0.3, alle
+`?v=104`. Proben in `tests/gpt-browser.mjs` (Startseite 320/360/412, als App weg); von Hand gegengeprüft: ohne die neue
+Zeile wird „Als App ist der Installieren-Knopf weg“ rot. `npm test` grün.
+⚠ `node tests/smoke_pruefer.mjs` direkt (ohne `GPT_NODE_ONLY`) bricht schon auf main am Klick auf `#leerKnopf` ab — nicht
+hier behoben. Am Tablet nicht gemessen.
