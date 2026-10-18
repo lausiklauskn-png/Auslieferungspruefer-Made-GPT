@@ -556,3 +556,7 @@ Texte pr_64–pr_67 (DE/EN). Probe in `smoke_pruefer` · Gegenprobe `NUR_FALL="T
 Der Erklärtext des Knopfs riet zuletzt, die Websitedaten zu löschen; auf github.io teilen sich alle Apps einen Speicher.
 Jetzt (wie Sage #1151, DE/EN): App unter Android-Einstellungen → Apps deinstallieren, Chrome schließen, neu laden, neu
 installieren. Cache `ap-gpt-v1.0.1`, alle `?v=102`; Prüfsummen in `docs/Dateipruefsummen.json` für die geänderten Dateien nachgezogen.
+
+## 🌓 Installieren-Meldung bleibt lesbar (2026-10-18)
+
+Klaus' Handy zeigte das Erklärfenster des Installieren-Knopfs hell auf weiß: `#install-meldung` setzte `background:var(--flaeche,#fff);color:inherit` — die Seite hat kein `--flaeche`, also weißer Grund, die Schrift erbt das helle Thema. Nachgemessen im Browser (headless, 380 px, Knopf getippt): Nacht 1,14 · Signal 1,00 · Tag 15,65. Jetzt misst `lesbar(m)` nach dem Einhängen den Kontrast (Logik wie Sage-Protokol #1152, von Hand eingebaut — die Datei bleibt die eigene Fassung); unter 4,5 steht die Meldung fest #1a1a1a auf #fff, Marke `data-lesbar="fest"|"seite"`. Danach: Nacht/Signal 17,40 (fest) · Tag 15,65 (seite). Cache v1.0.2, alle `?v=103`. ⚠ Am Tablet nicht gemessen.
