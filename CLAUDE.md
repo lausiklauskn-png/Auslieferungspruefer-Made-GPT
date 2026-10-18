@@ -550,3 +550,9 @@ Stelle, wo das Problem aufgetaucht ist. Oder der Text kenntlich gemacht werden."
 prüft sie über `dateiPruefen`. Der erste Hinweis sagt, dass es eine Test-Datei ist und ein Befund hier das Soll.
 Kommt die Datei nicht (offline beim ersten Mal), steht das da. Die Dateien liegen nicht im Installations-Vorrat.
 Texte pr_64–pr_67 (DE/EN). Probe in `smoke_pruefer` · Gegenprobe `NUR_FALL="TESTDATEI:"` (4 Fälle). Cache v24, `?v=97`.
+
+## Kein „Websitedaten löschen“ im Installieren-Rat (2026-10-18)
+
+Der Erklärtext des Knopfs riet zuletzt, die Websitedaten zu löschen; auf github.io teilen sich alle Apps einen Speicher.
+Jetzt (wie Sage #1151, DE/EN): App unter Android-Einstellungen → Apps deinstallieren, Chrome schließen, neu laden, neu
+installieren. Cache `ap-gpt-v1.0.1`, alle `?v=102`; Prüfsummen in `docs/Dateipruefsummen.json` für die geänderten Dateien nachgezogen.

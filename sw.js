@@ -1,7 +1,7 @@
 /* Auslieferungsprüfer GPT — ausschließlich app-eigene, scopegebundene Ressourcen. */
 'use strict';
 const CACHE_PREFIX='ap-gpt-';
-const CACHE_VERSION=CACHE_PREFIX+'v1.0.0';
+const CACHE_VERSION=CACHE_PREFIX+'v1.0.1';
 const CORE=[
   "404.html",
   "assets/config/netz.js",
