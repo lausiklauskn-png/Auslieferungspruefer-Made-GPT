@@ -1,3 +1,5 @@
+**🔬 Regel: Forschung nur in Kimhub (Klaus 2026-10-31: „einheitlich alles in Kimhub … in den einzelnen Repos soll keine Forschungseinträge sein“):** jeder Forschungseintrag (Sitzungs-Befunde, Messungen, Stunden-Auswertungen, Forschungsnotizen) kommt nach **Kimhub `forschung/messungen/`**; in diesem Repo werden keine Forschungseinträge geführt und keine Forschungsdateien angelegt. Öffentliche Forschungs**aufgaben** stehen in Sage-Protokol.
+
 # Gültiger Auftrag dieses Forks · 01.10.2026
 
 Dieses Repository ist **Auslieferungsprüfer GPT**, ein eigenständiger Umbau auf ausdrücklichen Wunsch von Klaus. Maßgeblich sind README und docs/Uebergabe-GPT.md. Frühere Anforderungen an ein identisches Design, alte Speicher-/Cache-Namen oder Bytegleichheit mit dem Sendeprüfer beschreiben die Herkunft und dürfen diesen Auftrag nicht überschreiben. Kein automatisches Kopieren in andere Repositories. Bestehende Rechte und unveränderte kanonische SBKIM-Module erhalten.
